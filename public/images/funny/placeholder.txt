@@ -1,0 +1,11 @@
+# Funny Moments Images
+
+This directory contains funny moment images:
+- canteen-chaos.jpg (The Great Canteen Incident)
+- stock-panic.jpg (Maharshi's Stock Market Drama)
+- dating-guru.jpg (Om's Dating Advice Disaster)
+- captain-chaos.jpg (Preetraj's Leadership Gone Wrong)
+- roast-master.jpg (Kevel's Roast Backfire)
+- photo-fail.jpg (The Great Group Photo Disaster)
+
+Upload actual funny moment photos to replace these placeholders.

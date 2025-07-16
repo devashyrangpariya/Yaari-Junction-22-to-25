@@ -1,0 +1,9 @@
+# Sports Team Images
+
+This directory contains sports-related images:
+- cricke-ar11-logo.png (Cricket team logo)
+- satoliya-ar7-logo.png (Football team logo)
+- cricket-victory-2023.jpg (Cricket championship photo)
+- football-victory-2024.jpg (Football league victory photo)
+
+Upload actual team logos and sports photos to replace these placeholders.

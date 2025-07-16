@@ -1,0 +1,16 @@
+# Friend Profile Images
+
+This directory contains profile images for all 13 friends:
+- fenil.jpg
+- preetraj.jpg
+- om.jpg
+- vansh.jpg
+- meet.jpg
+- maharshi.jpg
+- divy.jpg
+- ansh.jpg
+- kevel.jpg
+- rudra.jpg
+- smit.jpg
+
+Upload actual friend photos to replace these placeholders.

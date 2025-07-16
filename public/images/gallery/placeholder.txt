@@ -1,0 +1,9 @@
+# Gallery Images
+
+This directory contains college memory photos organized by year:
+- 2022/ (First year memories)
+- 2023/ (Second year memories)
+- 2024/ (Third year memories)
+- 2025/ (Final year memories)
+
+Upload actual college photos to create your memory gallery.
