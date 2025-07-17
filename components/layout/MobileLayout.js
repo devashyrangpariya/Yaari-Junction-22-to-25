@@ -1,3 +1,4 @@
+// components/layout/MobileLayout.js
 'use client';
 
 import { useState, useEffect } from 'react';

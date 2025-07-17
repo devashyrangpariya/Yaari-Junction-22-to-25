@@ -1,3 +1,4 @@
+// components/layout/Footer.js
 'use client';
 
 import { motion } from 'framer-motion';
@@ -228,4 +229,4 @@ export default function Footer() {
       </div>
     </motion.footer>
   );
-}
+} 

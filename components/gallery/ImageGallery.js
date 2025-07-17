@@ -1,18 +1,18 @@
+// components/gallery/ImageGallery.js
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { HiViewGrid, HiViewList, HiFilter, HiSearch } from 'react-icons/hi';
+import { HiViewGrid, HiViewList, HiDownload, HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 import ImageCard from './ImageCard';
 import ImageModal from './ImageModal';
-import YearSelector from './YearSelector';
-import FriendFilter from './FriendFilter';
-import { containerVariants, staggerContainer, staggerItem } from '../../lib/animations';
+import { containerVariants, staggerContainer, staggerItem, ANIMATION_PRESETS } from '../../lib/animations';
 import { AnimationOptimizer } from '../../lib/mobileOptimizations';
 import { GALLERY_YEARS } from '../../lib/constants';
-import { getImagesByFriends } from '../../lib/friendTagging';
+import JSZip from 'jszip';
+import { saveAs } from 'file-saver';
 
-// Sample gallery data - in a real app, this would come from an API
+// Sample gallery data - in a real app, this would come from an API or localStorage
 const SAMPLE_GALLERY_DATA = {
   '2022': [
     {
@@ -22,9 +22,9 @@ const SAMPLE_GALLERY_DATA = {
       title: 'College Journey Begins',
       year: 2022,
       tags: ['first-day', 'orientation', 'new-beginnings'],
-      friends: ['fenil', 'preetraj', 'om'],
       uploadDate: new Date('2022-08-15'),
-      cloudinaryId: 'college-start-2022'
+      width: 1200,
+      height: 800
     },
     {
       id: 'img-2022-2',
@@ -33,9 +33,9 @@ const SAMPLE_GALLERY_DATA = {
       title: 'Meeting New Friends',
       year: 2022,
       tags: ['friends', 'bonding', 'memories'],
-      friends: ['vansh', 'meet', 'maharshi'],
       uploadDate: new Date('2022-09-10'),
-      cloudinaryId: 'first-friends-2022'
+      width: 800,
+      height: 1200
     },
     {
       id: 'img-2022-3',
@@ -44,9 +44,31 @@ const SAMPLE_GALLERY_DATA = {
       title: 'First Study Session',
       year: 2022,
       tags: ['study', 'academic', 'teamwork'],
-      friends: ['divy', 'ansh', 'kevel'],
       uploadDate: new Date('2022-10-05'),
-      cloudinaryId: 'study-group-2022'
+      width: 1200,
+      height: 900
+    },
+    {
+      id: 'img-2022-4',
+      url: '/images/gallery/2022/first-project.jpg',
+      thumbnail: '/images/gallery/2022/first-project-thumb.jpg',
+      title: 'First College Project',
+      year: 2022,
+      tags: ['project', 'teamwork', 'learning'],
+      uploadDate: new Date('2022-11-20'),
+      width: 1000,
+      height: 750
+    },
+    {
+      id: 'img-2022-5',
+      url: '/images/gallery/2022/winter-break.jpg',
+      thumbnail: '/images/gallery/2022/winter-break-thumb.jpg',
+      title: 'Winter Break Fun',
+      year: 2022,
+      tags: ['vacation', 'fun', 'friends'],
+      uploadDate: new Date('2022-12-25'),
+      width: 1500,
+      height: 1000
     }
   ],
   '2023': [
@@ -57,9 +79,9 @@ const SAMPLE_GALLERY_DATA = {
       title: 'Cultural Festival Performance',
       year: 2023,
       tags: ['cultural', 'performance', 'festival'],
-      friends: ['rudra', 'smit',],
       uploadDate: new Date('2023-03-20'),
-      cloudinaryId: 'cultural-fest-2023'
+      width: 1200,
+      height: 800
     },
     {
       id: 'img-2023-2',
@@ -68,9 +90,9 @@ const SAMPLE_GALLERY_DATA = {
       title: 'Sports Day Victory',
       year: 2023,
       tags: ['sports', 'victory', 'teamwork'],
-      friends: ['fenil', 'om', 'vansh', 'meet'],
       uploadDate: new Date('2023-04-15'),
-      cloudinaryId: 'sports-day-2023'
+      width: 1600,
+      height: 900
     },
     {
       id: 'img-2023-3',
@@ -79,9 +101,31 @@ const SAMPLE_GALLERY_DATA = {
       title: 'All Friends Together',
       year: 2023,
       tags: ['group', 'friendship', 'memories'],
-      friends: ['fenil', 'preetraj', 'om', 'vansh', 'meet', 'maharshi', 'divy', 'ansh', 'kevel', 'rudra', 'smit'],
       uploadDate: new Date('2023-06-10'),
-      cloudinaryId: 'group-photo-2023'
+      width: 1800,
+      height: 1200
+    },
+    {
+      id: 'img-2023-4',
+      url: '/images/gallery/2023/summer-trip.jpg',
+      thumbnail: '/images/gallery/2023/summer-trip-thumb.jpg',
+      title: 'Summer Vacation Trip',
+      year: 2023,
+      tags: ['summer', 'vacation', 'travel'],
+      uploadDate: new Date('2023-07-05'),
+      width: 1200,
+      height: 900
+    },
+    {
+      id: 'img-2023-5',
+      url: '/images/gallery/2023/hackathon.jpg',
+      thumbnail: '/images/gallery/2023/hackathon-thumb.jpg',
+      title: 'College Hackathon',
+      year: 2023,
+      tags: ['tech', 'coding', 'competition'],
+      uploadDate: new Date('2023-09-18'),
+      width: 1000,
+      height: 750
     }
   ],
   '2024': [
@@ -92,9 +136,9 @@ const SAMPLE_GALLERY_DATA = {
       title: 'Cricke AR11 Championship',
       year: 2024,
       tags: ['cricket', 'championship', 'victory'],
-      friends: ['fenil', 'om', 'vansh', 'ansh', 'rudra'],
       uploadDate: new Date('2024-03-15'),
-      cloudinaryId: 'cricket-victory-2024'
+      width: 1200,
+      height: 800
     },
     {
       id: 'img-2024-2',
@@ -102,10 +146,9 @@ const SAMPLE_GALLERY_DATA = {
       thumbnail: '/images/gallery/2024/football-win-thumb.jpg',
       title: 'Satoliya AR7 Victory',
       year: 2024,
-      tags: ['football', 'satoliya', 'sports'],
-      friends: ['meet', 'maharshi', 'divy', 'kevel', 'smit'],
       uploadDate: new Date('2024-01-20'),
-      cloudinaryId: 'football-win-2024'
+      width: 1600,
+      height: 900
     },
     {
       id: 'img-2024-3',
@@ -113,10 +156,29 @@ const SAMPLE_GALLERY_DATA = {
       thumbnail: '/images/gallery/2024/project-presentation-thumb.jpg',
       title: 'Final Year Project',
       year: 2024,
-      tags: ['project', 'presentation', 'academic'],
-      friends: ['preetraj',],
       uploadDate: new Date('2024-11-30'),
-      cloudinaryId: 'project-presentation-2024'
+      width: 1200,
+      height: 900
+    },
+    {
+      id: 'img-2024-4',
+      url: '/images/gallery/2024/tech-fest.jpg',
+      thumbnail: '/images/gallery/2024/tech-fest-thumb.jpg',
+      title: 'Technology Festival',
+      year: 2024,
+      uploadDate: new Date('2024-04-25'),
+      width: 1000,
+      height: 750
+    },
+    {
+      id: 'img-2024-5',
+      url: '/images/gallery/2024/internship.jpg',
+      thumbnail: '/images/gallery/2024/internship-thumb.jpg',
+      title: 'Summer Internship',
+      year: 2024,
+      uploadDate: new Date('2024-06-15'),
+      width: 1500,
+      height: 1000
     }
   ],
   '2025': [
@@ -126,10 +188,9 @@ const SAMPLE_GALLERY_DATA = {
       thumbnail: '/images/gallery/2025/graduation-prep-thumb.jpg',
       title: 'Graduation Preparation',
       year: 2025,
-      tags: ['graduation', 'preparation', 'milestone'],
-      friends: ['fenil', 'preetraj', 'om', 'vansh'],
       uploadDate: new Date('2025-01-15'),
-      cloudinaryId: 'graduation-prep-2025'
+      width: 1200,
+      height: 800
     },
     {
       id: 'img-2025-2',
@@ -137,29 +198,90 @@ const SAMPLE_GALLERY_DATA = {
       thumbnail: '/images/gallery/2025/final-memories-thumb.jpg',
       title: 'Creating Final Memories',
       year: 2025,
-      tags: ['memories', 'final', 'friendship'],
-      friends: ['meet', 'maharshi', 'divy', 'ansh'],
       uploadDate: new Date('2025-02-10'),
-      cloudinaryId: 'final-memories-2025'
+      width: 1600,
+      height: 900
+    },
+    {
+      id: 'img-2025-3',
+      url: '/images/gallery/2025/farewell-party.jpg',
+      thumbnail: '/images/gallery/2025/farewell-party-thumb.jpg',
+      title: 'Farewell Celebration',
+      year: 2025,
+      uploadDate: new Date('2025-03-20'),
+      width: 1800,
+      height: 1200
+    },
+    {
+      id: 'img-2025-4',
+      url: '/images/gallery/2025/graduation-day.jpg',
+      thumbnail: '/images/gallery/2025/graduation-day-thumb.jpg',
+      title: 'Graduation Day',
+      year: 2025,
+      uploadDate: new Date('2025-04-30'),
+      width: 1200,
+      height: 900
+    },
+    {
+      id: 'img-2025-5',
+      url: '/images/gallery/2025/future-plans.jpg',
+      thumbnail: '/images/gallery/2025/future-plans-thumb.jpg',
+      title: 'Future Planning Session',
+      year: 2025,
+      uploadDate: new Date('2025-05-15'),
+      width: 1000,
+      height: 750
     }
   ]
+};
+
+// Load images from localStorage if available
+const loadImagesFromStorage = () => {
+  if (typeof window === 'undefined') return SAMPLE_GALLERY_DATA;
+  
+  try {
+    const storedImages = localStorage.getItem('galleryImages');
+    if (storedImages) {
+      const parsedData = JSON.parse(storedImages);
+      // Merge with sample data
+      const mergedData = { ...SAMPLE_GALLERY_DATA };
+      
+      Object.keys(parsedData).forEach(year => {
+        if (!mergedData[year]) mergedData[year] = [];
+        mergedData[year] = [...mergedData[year], ...parsedData[year]];
+      });
+      
+      return mergedData;
+    }
+  } catch (error) {
+    console.error("Error loading images from localStorage:", error);
+  }
+  
+  return SAMPLE_GALLERY_DATA;
 };
 
 export default function ImageGallery({ 
   selectedYear = 'all',
   onYearChange,
   onImageClick,
-  className = '' 
+  className = '',
+  layout = 'grid'
 }) {
-  const [layout, setLayout] = useState('grid'); // 'grid' or 'masonry'
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedTags, setSelectedTags] = useState([]);
-  const [selectedFriends, setSelectedFriends] = useState([]);
-  const [isLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [galleryData, setGalleryData] = useState(SAMPLE_GALLERY_DATA);
+  const [visibleImages, setVisibleImages] = useState(10);
+  const galleryRef = useRef(null);
   
   // Modal state
   const [selectedImage, setSelectedImage] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
+  
+  // Load images from localStorage on mount
+  useEffect(() => {
+    const loadedData = loadImagesFromStorage();
+    setGalleryData(loadedData);
+  }, []);
   
   // Performance-aware animation variants
   const optimizedVariants = useMemo(() => {
@@ -174,72 +296,111 @@ export default function ImageGallery({
     const stats = {};
     GALLERY_YEARS.forEach(year => {
       stats[year] = {
-        totalImages: SAMPLE_GALLERY_DATA[year]?.length || 0
+        totalImages: galleryData[year]?.length || 0
       };
     });
     return stats;
-  }, []);
+  }, [galleryData]);
 
-  // Filter images based on selected year, search term, tags, and friends
+  // Filter images based on selected year
   const filteredImages = useMemo(() => {
     let images = [];
     
     if (selectedYear === 'all') {
       // Combine all years
-      images = Object.values(SAMPLE_GALLERY_DATA).flat();
+      images = Object.values(galleryData).flat();
     } else {
-      images = SAMPLE_GALLERY_DATA[selectedYear] || [];
-    }
-
-    // Apply search filter
-    if (searchTerm) {
-      images = images.filter(image => 
-        image.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        image.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
-      );
-    }
-
-    // Apply tag filter
-    if (selectedTags.length > 0) {
-      images = images.filter(image =>
-        selectedTags.some(tag => image.tags.includes(tag))
-      );
-    }
-
-    // Apply friend filter using the friend tagging system
-    if (selectedFriends.length > 0) {
-      images = getImagesByFriends(selectedFriends, images);
+      images = galleryData[selectedYear] || [];
     }
 
     // Sort by upload date (newest first)
     return images.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate));
-  }, [selectedYear, searchTerm, selectedTags, selectedFriends]);
+  }, [selectedYear, galleryData]);
 
-  // Get all unique tags for filter options
-  const allTags = useMemo(() => {
-    const tags = new Set();
-    Object.values(SAMPLE_GALLERY_DATA).flat().forEach(image => {
-      image.tags.forEach(tag => tags.add(tag));
-    });
-    return Array.from(tags).sort();
-  }, []);
+  // Implement infinite scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      if (galleryRef.current && window.innerHeight + window.scrollY >= galleryRef.current.offsetTop + galleryRef.current.clientHeight - 600) {
+        if (visibleImages < filteredImages.length) {
+          setVisibleImages(prev => Math.min(prev + 10, filteredImages.length));
+        }
+      }
+    };
 
-  const handleTagToggle = (tag) => {
-    setSelectedTags(prev => 
-      prev.includes(tag) 
-        ? prev.filter(t => t !== tag)
-        : [...prev, tag]
-    );
-  };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [visibleImages, filteredImages.length]);
 
-  const clearFilters = () => {
-    setSearchTerm('');
-    setSelectedTags([]);
-    setSelectedFriends([]);
-  };
+  // Reset visible images when year changes
+  useEffect(() => {
+    setVisibleImages(10);
+    
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 800);
+    return () => clearTimeout(timer);
+  }, [selectedYear]);
 
-  const handleFriendsChange = (friendIds) => {
-    setSelectedFriends(friendIds);
+  // Download images as zip
+  const handleDownloadImages = async () => {
+    setIsDownloading(true);
+    
+    try {
+      const zip = new JSZip();
+      const imagesToDownload = selectedYear === 'all' 
+        ? filteredImages 
+        : galleryData[selectedYear] || [];
+      
+      // Create a folder for each year if downloading all
+      if (selectedYear === 'all') {
+        const imagesByYear = {};
+        
+        // Group images by year
+        imagesToDownload.forEach(image => {
+          const year = image.year.toString();
+          if (!imagesByYear[year]) imagesByYear[year] = [];
+          imagesByYear[year].push(image);
+        });
+        
+        // Add images to year folders
+        for (const year in imagesByYear) {
+          const yearFolder = zip.folder(`${year}`);
+          
+          // Add images to the year folder
+          for (const image of imagesByYear[year]) {
+            const imageName = image.title.replace(/\s+/g, '_').toLowerCase() + '.jpg';
+            
+            // Fetch the image
+            const response = await fetch(image.url);
+            const blob = await response.blob();
+            
+            yearFolder.file(imageName, blob);
+          }
+        }
+      } else {
+        // Just add all images to the root of the zip
+        for (const image of imagesToDownload) {
+          const imageName = image.title.replace(/\s+/g, '_').toLowerCase() + '.jpg';
+          
+          // Fetch the image
+          const response = await fetch(image.url);
+          const blob = await response.blob();
+          
+          zip.file(imageName, blob);
+        }
+      }
+      
+      // Generate and download the zip
+      const content = await zip.generateAsync({ type: 'blob' });
+      const zipName = selectedYear === 'all' ? 'all_years_gallery.zip' : `${selectedYear}_gallery.zip`;
+      saveAs(content, zipName);
+    } catch (error) {
+      console.error('Error creating zip file:', error);
+      alert('Failed to download images. Please try again.');
+    } finally {
+      setIsDownloading(false);
+    }
   };
 
   // Modal handlers
@@ -259,223 +420,319 @@ export default function ImageGallery({
 
   const handleNextImage = () => {
     if (!selectedImage) return;
+    
     const currentIndex = filteredImages.findIndex(img => img.id === selectedImage.id);
-    const nextIndex = (currentIndex + 1) % filteredImages.length;
-    setSelectedImage(filteredImages[nextIndex]);
+    if (currentIndex < filteredImages.length - 1) {
+      setSelectedImage(filteredImages[currentIndex + 1]);
+    }
   };
 
   const handlePreviousImage = () => {
     if (!selectedImage) return;
+    
     const currentIndex = filteredImages.findIndex(img => img.id === selectedImage.id);
-    const previousIndex = currentIndex === 0 ? filteredImages.length - 1 : currentIndex - 1;
-    setSelectedImage(filteredImages[previousIndex]);
+    if (currentIndex > 0) {
+      setSelectedImage(filteredImages[currentIndex - 1]);
+    }
   };
 
-  return (
-    <div className={`space-y-6 ${className}`}>
-      {/* Year Selector */}
-      <YearSelector
-        selectedYear={selectedYear}
-        onYearChange={onYearChange}
-        yearStats={yearStats}
-      />
+  // Group images by year if showing all years
+  const groupedImages = useMemo(() => {
+    if (selectedYear !== 'all') return null;
+    
+    const grouped = {};
+    filteredImages.forEach(image => {
+      const year = image.year.toString();
+      if (!grouped[year]) {
+        grouped[year] = [];
+      }
+      grouped[year].push(image);
+    });
+    
+    // Sort years in descending order
+    return Object.keys(grouped)
+      .sort((a, b) => b - a)
+      .map(year => ({
+        year,
+        images: grouped[year].slice(0, visibleImages)
+      }));
+  }, [filteredImages, selectedYear, visibleImages]);
 
-      {/* Controls Section */}
+  // Render loading skeleton
+  const renderSkeleton = () => {
+    return (
+      <div className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6`}>
+        {[...Array(10)].map((_, index) => (
+          <div key={index} className="bg-gray-200 dark:bg-gray-700 rounded-xl aspect-square animate-pulse"></div>
+        ))}
+      </div>
+    );
+  };
+
+  // Render the grid layout
+  const renderGridLayout = (images) => {
+    const displayImages = images.slice(0, visibleImages);
+    
+    return (
       <motion.div
-        className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg"
-        variants={containerVariants}
+        className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6`}
+        variants={optimizedVariants.container}
         initial="hidden"
         animate="visible"
       >
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
-          {/* Search Bar */}
-          <motion.div 
-            className="relative flex-1 max-w-md"
-            variants={staggerItem}
+        {displayImages.map((image, index) => (
+          <motion.div
+            key={image.id}
+            variants={optimizedVariants.item}
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ 
+              opacity: 1, 
+              y: 0,
+              transition: { 
+                delay: index * 0.05,
+                duration: 0.5
+              }
+            }}
           >
-            <HiSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Search images..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
+            <ImageCard
+              image={image}
+              onImageClick={handleImageClick}
+              showTags={true}
             />
           </motion.div>
-
-          {/* Layout Toggle */}
-          <motion.div 
-            className="flex items-center space-x-2"
-            variants={staggerItem}
-          >
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Layout:</span>
-            <div className="flex bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
-              <button
-                onClick={() => setLayout('grid')}
-                className={`p-2 rounded-md transition-colors duration-200 ${
-                  layout === 'grid'
-                    ? 'bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-400 shadow-sm'
-                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
-                }`}
-              >
-                <HiViewGrid className="w-5 h-5" />
-              </button>
-              <button
-                onClick={() => setLayout('masonry')}
-                className={`p-2 rounded-md transition-colors duration-200 ${
-                  layout === 'masonry'
-                    ? 'bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-400 shadow-sm'
-                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
-                }`}
-              >
-                <HiViewList className="w-5 h-5" />
-              </button>
-            </div>
-          </motion.div>
-        </div>
-
-        {/* Tag Filters */}
-        {allTags.length > 0 && (
-          <motion.div 
-            className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700"
-            variants={staggerItem}
-          >
-            <div className="flex items-center space-x-2 mb-3">
-              <HiFilter className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Filter by tags:</span>
-              {selectedTags.length > 0 && (
-                <button
-                  onClick={clearFilters}
-                  className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors duration-200"
-                >
-                  Clear all
-                </button>
-              )}
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {allTags.map(tag => (
-                <button
-                  key={tag}
-                  onClick={() => handleTagToggle(tag)}
-                  className={`px-3 py-1 rounded-full text-sm font-medium transition-colors duration-200 ${
-                    selectedTags.includes(tag)
-                      ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border border-blue-300 dark:border-blue-600'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-600'
-                  }`}
-                >
-                  {tag}
-                </button>
-              ))}
-            </div>
-          </motion.div>
-        )}
-
-        {/* Results Info */}
-        <motion.div 
-          className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700"
-          variants={staggerItem}
-        >
-          <p className="text-sm text-gray-600 dark:text-gray-400">
-            Showing {filteredImages.length} image{filteredImages.length !== 1 ? 's' : ''}
-            {selectedYear !== 'all' && ` from ${selectedYear}`}
-            {searchTerm && ` matching "${searchTerm}"`}
-            {selectedTags.length > 0 && ` with tags: ${selectedTags.join(', ')}`}
-            {selectedFriends.length > 0 && ` with friends selected`}
-          </p>
-        </motion.div>
+        ))}
       </motion.div>
+    );
+  };
 
-      {/* Friend Filter */}
-      <FriendFilter
-        selectedFriends={selectedFriends}
-        onFriendsChange={handleFriendsChange}
-        availableImages={Object.values(SAMPLE_GALLERY_DATA).flat()}
-      />
-
-      {/* Image Gallery */}
-      <AnimatePresence mode="wait">
-        {isLoading ? (
-          <motion.div
-            key="loading"
-            className="flex items-center justify-center py-20"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-          </motion.div>
-        ) : filteredImages.length === 0 ? (
-          <motion.div
-            key="empty"
-            className="text-center py-20"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-          >
-            <div className="text-gray-400 dark:text-gray-500 mb-4">
-              <HiSearch className="w-16 h-16 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">No images found</h3>
-              <p className="text-gray-500 dark:text-gray-400">
-                {searchTerm || selectedTags.length > 0
-                  ? 'Try adjusting your search or filters'
-                  : `No images available for ${selectedYear === 'all' ? 'any year' : selectedYear}`
-                }
-              </p>
-              {(searchTerm || selectedTags.length > 0) && (
-                <button
-                  onClick={clearFilters}
-                  className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
-                >
-                  Clear filters
-                </button>
-              )}
-            </div>
-          </motion.div>
-        ) : (
-          <motion.div
-            key={`gallery-${layout}-${selectedYear}`}
-            className={
-              layout === 'grid'
-                ? 'grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3 sm:gap-4 lg:gap-6'
-                : 'columns-1 xs:columns-2 sm:columns-2 md:columns-3 lg:columns-4 xl:columns-5 2xl:columns-6 gap-3 sm:gap-4 lg:gap-6 space-y-3 sm:space-y-4 lg:space-y-6'
-            }
+  // Render the masonry layout
+  const renderMasonryLayout = (images) => {
+    // Split images into columns for masonry effect based on image dimensions
+    const displayImages = images.slice(0, visibleImages);
+    const columns = [[], [], [], []];
+    
+    displayImages.forEach((image, index) => {
+      // Calculate which column to put the image in based on height/width ratio
+      const ratio = image.height / image.width;
+      let columnIndex;
+      
+      if (ratio > 1.2) { // Tall image
+        columnIndex = index % 2 === 0 ? 0 : 2;
+      } else if (ratio < 0.8) { // Wide image
+        columnIndex = index % 2 === 0 ? 1 : 3;
+      } else { // Square-ish image
+        columnIndex = index % 4;
+      }
+      
+      columns[columnIndex].push(image);
+    });
+    
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        {columns.map((column, colIndex) => (
+          <motion.div 
+            key={colIndex} 
+            className="flex flex-col gap-4 sm:gap-6"
             variants={optimizedVariants.container}
             initial="hidden"
             animate="visible"
           >
-            {filteredImages.map((image, index) => (
+            {column.map((image, index) => (
               <motion.div
                 key={image.id}
-                variants={optimizedVariants.item || staggerItem}
-                className={layout === 'masonry' ? 'break-inside-avoid mb-3 sm:mb-4 lg:mb-6' : ''}
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ 
+                  opacity: 1, 
+                  y: 0,
+                  transition: { 
+                    delay: index * 0.1 + colIndex * 0.05,
+                    duration: 0.5
+                  }
+                }}
               >
                 <ImageCard
                   image={image}
                   onImageClick={handleImageClick}
-                  onFriendTagClick={(friendId) => {
-                    // Add the friend to the selected friends filter
-                    if (!selectedFriends.includes(friendId)) {
-                      setSelectedFriends(prev => [...prev, friendId]);
-                    }
-                  }}
                   showTags={true}
-                  className="h-full"
+                  className="w-full"
                 />
               </motion.div>
             ))}
           </motion.div>
-        )}
-      </AnimatePresence>
+        ))}
+      </div>
+    );
+  };
+
+  return (
+    <div className={`relative ${className}`} ref={galleryRef}>
+      {/* Download Button */}
+      <div className="mb-6 flex justify-end">
+        <button
+          onClick={handleDownloadImages}
+          disabled={isDownloading || filteredImages.length === 0}
+          className={`px-4 py-2 rounded-lg flex items-center space-x-2 ${
+            isDownloading 
+              ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
+              : 'bg-blue-600 text-white hover:bg-blue-700'
+          }`}
+        >
+          {isDownloading ? (
+            <>
+              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              <span>Downloading...</span>
+            </>
+          ) : (
+            <>
+              <HiDownload className="w-5 h-5" />
+              <span>Download {selectedYear === 'all' ? 'All' : selectedYear} Images</span>
+            </>
+          )}
+        </button>
+      </div>
+
+      {/* Gallery Content */}
+      {isLoading ? (
+        renderSkeleton()
+      ) : filteredImages.length === 0 ? (
+        <div className="text-center py-16">
+          <div className="w-16 h-16 mx-auto mb-4 text-gray-400 dark:text-gray-600">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <h3 className="mt-4 text-xl font-semibold text-gray-700 dark:text-gray-300">No images found</h3>
+          <p className="mt-2 text-gray-500 dark:text-gray-400">
+            There are no images available for {selectedYear === 'all' ? 'any year' : selectedYear}
+          </p>
+        </div>
+      ) : selectedYear === 'all' && groupedImages ? (
+        // Year-wise grouped display for "All Years"
+        <div className="space-y-12">
+          {groupedImages.map(group => (
+            <div key={group.year} className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center">
+                  <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 px-3 py-1 rounded-lg mr-3">
+                    {group.year}
+                  </span>
+                  <span className="text-gray-600 dark:text-gray-400 text-lg font-normal">
+                    ({galleryData[group.year]?.length || 0} photos)
+                  </span>
+                </h2>
+                
+                <motion.button
+                  className="text-blue-600 dark:text-blue-400 flex items-center space-x-1 hover:underline"
+                  onClick={() => onYearChange(group.year)}
+                  whileHover={{ x: 5 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <span>View Year</span>
+                  <HiChevronRight className="w-5 h-5" />
+                </motion.button>
+              </div>
+              
+              <AnimatePresence>
+                {layout === 'grid' ? 
+                  renderGridLayout(group.images) : 
+                  renderMasonryLayout(group.images)
+                }
+              </AnimatePresence>
+            </div>
+          ))}
+          
+          {/* Load More Button for All Years */}
+          {visibleImages < filteredImages.length && (
+            <div className="flex justify-center mt-8">
+              <button
+                onClick={() => setVisibleImages(prev => Math.min(prev + 10, filteredImages.length))}
+                className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Load More Images
+              </button>
+            </div>
+          )}
+        </div>
+      ) : (
+        // Single year display
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`${selectedYear}-${layout}`}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            variants={ANIMATION_PRESETS.fadeIn}
+          >
+            {layout === 'grid' ? 
+              renderGridLayout(filteredImages) : 
+              renderMasonryLayout(filteredImages)
+            }
+            
+            {/* Load More Button for Single Year */}
+            {visibleImages < filteredImages.length && (
+              <div className="flex justify-center mt-8">
+                <button
+                  onClick={() => setVisibleImages(prev => Math.min(prev + 10, filteredImages.length))}
+                  className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  Load More Images
+                </button>
+              </div>
+            )}
+          </motion.div>
+        </AnimatePresence>
+      )}
 
       {/* Image Modal */}
-      <ImageModal
-        image={selectedImage}
-        images={filteredImages}
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        onNext={handleNextImage}
-        onPrevious={handlePreviousImage}
-      />
+      {isModalOpen && selectedImage && (
+        <ImageModal
+          image={selectedImage}
+          onClose={handleCloseModal}
+          onNext={handleNextImage}
+          onPrevious={handlePreviousImage}
+          hasNext={filteredImages.findIndex(img => img.id === selectedImage.id) < filteredImages.length - 1}
+          hasPrevious={filteredImages.findIndex(img => img.id === selectedImage.id) > 0}
+        />
+      )}
+      
+      {/* Navigation Buttons for Mobile */}
+      {filteredImages.length > 0 && (
+        <div className="fixed bottom-6 right-6 flex space-x-3 z-10 md:hidden">
+          <motion.button
+            className="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center shadow-lg"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => {
+              const currentIndex = GALLERY_YEARS.indexOf(selectedYear);
+              if (currentIndex > 0) {
+                onYearChange(GALLERY_YEARS[currentIndex - 1]);
+              } else if (selectedYear === 'all') {
+                onYearChange(GALLERY_YEARS[GALLERY_YEARS.length - 1]);
+              } else {
+                onYearChange('all');
+              }
+            }}
+          >
+            <HiChevronLeft className="w-6 h-6" />
+          </motion.button>
+          
+          <motion.button
+            className="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center shadow-lg"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => {
+              const currentIndex = GALLERY_YEARS.indexOf(selectedYear);
+              if (currentIndex >= 0 && currentIndex < GALLERY_YEARS.length - 1) {
+                onYearChange(GALLERY_YEARS[currentIndex + 1]);
+              } else {
+                onYearChange('all');
+              }
+            }}
+          >
+            <HiChevronRight className="w-6 h-6" />
+          </motion.button>
+        </div>
+      )}
     </div>
   );
 }

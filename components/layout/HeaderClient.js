@@ -1,3 +1,4 @@
+// components/layout/HeaderClient.js
 'use client';
 
 import dynamic from 'next/dynamic';

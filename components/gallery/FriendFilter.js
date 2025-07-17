@@ -18,7 +18,7 @@ const FriendFilter = ({
   // Calculate friend statistics from available images
   const friendStats = useMemo(() => {
     const stats = {};
-    
+
     // Initialize stats for all friends
     FRIENDS_DATA.forEach(friend => {
       stats[friend.id] = {
@@ -54,7 +54,7 @@ const FriendFilter = ({
     const newSelectedFriends = selectedFriends.includes(friendId)
       ? selectedFriends.filter(id => id !== friendId)
       : [...selectedFriends, friendId];
-    
+
     onFriendsChange(newSelectedFriends);
   };
 
@@ -68,7 +68,7 @@ const FriendFilter = ({
     onFriendsChange(allFriendIds);
   };
 
-  const selectedFriendsData = FRIENDS_DATA.filter(friend => 
+  const selectedFriendsData = FRIENDS_DATA.filter(friend =>
     selectedFriends.includes(friend.id)
   );
 
@@ -148,7 +148,7 @@ const FriendFilter = ({
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
               />
-              
+
               <div className="flex items-center justify-between">
                 <Button
                   variant="ghost"
@@ -185,11 +185,10 @@ const FriendFilter = ({
                 filteredFriends.map(friend => (
                   <motion.button
                     key={friend.id}
-                    className={`w-full flex items-center space-x-3 p-3 rounded-lg transition-colors duration-200 ${
-                      selectedFriends.includes(friend.id)
+                    className={`w-full flex items-center space-x-3 p-3 rounded-lg transition-colors duration-200 ${selectedFriends.includes(friend.id)
                         ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border border-blue-300 dark:border-blue-600'
                         : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 border border-transparent'
-                    }`}
+                      }`}
                     onClick={() => handleFriendToggle(friend.id)}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
@@ -204,7 +203,7 @@ const FriendFilter = ({
                       <div className="flex items-center space-x-2">
                         <p className="font-medium">{friend.name}</p>
                         {friend.nickname !== friend.name && (
-                          <span className="text-xs opacity-70">"{friend.nickname}"</span>
+                          <span className="text-xs opacity-70">&quot;{friend.nickname}&quot;</span>
                         )}
                       </div>
                       <div className="flex items-center justify-between">
@@ -216,11 +215,10 @@ const FriendFilter = ({
                     </div>
 
                     {/* Selection Indicator */}
-                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors duration-200 ${
-                      selectedFriends.includes(friend.id)
+                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors duration-200 ${selectedFriends.includes(friend.id)
                         ? 'bg-blue-600 border-blue-600'
                         : 'border-gray-300 dark:border-gray-600'
-                    }`}>
+                      }`}>
                       {selectedFriends.includes(friend.id) && (
                         <motion.div
                           className="w-2 h-2 bg-white rounded-full"

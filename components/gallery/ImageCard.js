@@ -1,21 +1,20 @@
+// components/gallery/ImageCard.js
 'use client';
 
 import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { HiHeart, HiDownload, HiEye, HiUsers } from 'react-icons/hi';
+import { HiHeart, HiDownload, HiEye, HiCalendar } from 'react-icons/hi';
 import { galleryVariants } from '../../lib/animations';
-import { getImageTags } from '../../lib/friendTagging';
-import { FRIENDS_DATA } from '../../lib/constants';
 import { useMobileOptimizedImage } from '../../lib/hooks/useMobileOptimizedImage';
 
 export default function ImageCard({ 
   image, 
   onImageClick, 
-  onFriendTagClick,
   showTags = true, 
   className = '' 
 }) {
   const containerRef = useRef(null);
+  const [isHovered, setIsHovered] = useState(false);
   
   // Use mobile-optimized image loading
   const {
@@ -42,14 +41,10 @@ export default function ImageCard({
     }
   };
 
-  // Get tagged friends for this image
-  const getTaggedFriends = () => {
-    if (!image?.id) return [];
-    const taggedFriendIds = getImageTags(image.id);
-    return FRIENDS_DATA.filter(friend => taggedFriendIds.includes(friend.id));
-  };
-
-  const taggedFriends = getTaggedFriends();
+  // Calculate aspect ratio for the card
+  const aspectRatio = image.height && image.width 
+    ? `${image.width} / ${image.height}` 
+    : '1 / 1';
 
   return (
     <motion.div
@@ -60,9 +55,12 @@ export default function ImageCard({
       whileHover="hover"
       whileTap={{ scale: 0.98 }}
       onClick={handleCardClick}
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
+      style={{ aspectRatio }}
     >
       {/* Image Container */}
-      <div ref={containerRef} className="relative aspect-square overflow-hidden">
+      <div ref={containerRef} className="relative h-full w-full overflow-hidden">
         {(isLoading || (!isLoaded && !hasError)) && (
           <div className="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse flex items-center justify-center">
             <div className="w-8 h-8 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
@@ -77,21 +75,39 @@ export default function ImageCard({
             </div>
           </div>
         ) : (
-          <img
-            ref={imageRef}
-            src={currentSrc}
-            alt={image.title || 'Gallery image'}
-            className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-110 ${
-              isLoaded ? 'opacity-100' : 'opacity-0'
-            }`}
-            loading="lazy"
-          />
+          <>
+            <img
+              ref={imageRef}
+              src={currentSrc}
+              alt={image.title || 'Gallery image'}
+              className={`w-full h-full object-cover transition-all duration-500 ${
+                isLoaded ? 'opacity-100' : 'opacity-0'
+              } ${isHovered ? 'scale-110 blur-[1px]' : 'scale-100'}`}
+              loading="lazy"
+            />
+            
+            {/* Year Badge */}
+            <div className="absolute top-3 left-3 bg-black/50 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-full flex items-center space-x-1">
+              <HiCalendar className="w-3 h-3" />
+              <span>{image.year}</span>
+            </div>
+          </>
         )}
 
         {/* Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <motion.div 
+          className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isHovered ? 1 : 0 }}
+          transition={{ duration: 0.3 }}
+        >
           {/* Action Buttons - Touch-friendly sizing */}
-          <div className="absolute top-2 right-2 sm:top-3 sm:right-3 flex space-x-1 sm:space-x-2">
+          <motion.div 
+            className="absolute top-2 right-2 sm:top-3 sm:right-3 flex space-x-1 sm:space-x-2"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : -10 }}
+            transition={{ duration: 0.3, delay: 0.1 }}
+          >
             <motion.button
               className="w-10 h-10 sm:w-8 sm:h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-colors duration-200 touch-manipulation"
               whileHover={{ scale: 1.1 }}
@@ -112,85 +128,75 @@ export default function ImageCard({
               onClick={(e) => {
                 e.stopPropagation();
                 // Handle download functionality
+                const link = document.createElement('a');
+                link.href = image.url;
+                link.download = `${image.title || 'image'}-${image.year}.jpg`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
               }}
               aria-label="Download image"
             >
               <HiDownload className="w-4 h-4 sm:w-4 sm:h-4" />
             </motion.button>
-          </div>
+          </motion.div>
 
           {/* Image Info */}
-          <div className="absolute bottom-0 left-0 right-0 p-4">
+          <motion.div 
+            className="absolute bottom-0 left-0 right-0 p-4"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 10 }}
+            transition={{ duration: 0.3, delay: 0.1 }}
+          >
             {image.title && (
-              <h3 className="text-white font-semibold text-sm mb-1 truncate">
+              <h3 className="text-white font-semibold text-base mb-1 truncate">
                 {image.title}
               </h3>
             )}
             
             <div className="flex items-center justify-between text-white/80 text-xs">
-              <span>{image.year}</span>
-              {taggedFriends.length > 0 && (
-                <div className="flex items-center space-x-1">
-                  <HiUsers className="w-3 h-3" />
-                  <span>{taggedFriends.length}</span>
-                </div>
-              )}
+              <span className="bg-white/20 backdrop-blur-sm px-2 py-1 rounded-full">
+                {new Date(image.uploadDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+              </span>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
 
-      {/* Tags and Friends - Mobile optimized */}
-      {showTags && (image.tags?.length > 0 || taggedFriends.length > 0) && (
-        <div className="p-2 sm:p-3 space-y-1.5 sm:space-y-2">
-          {/* Regular Tags */}
-          {image.tags && image.tags.length > 0 && (
-            <div className="flex flex-wrap gap-1">
-              {image.tags.slice(0, 2).map((tag, index) => (
-                <span
-                  key={index}
-                  className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs rounded-full truncate max-w-20 sm:max-w-none"
-                >
-                  {tag}
-                </span>
-              ))}
-              {image.tags.length > 2 && (
-                <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 text-xs rounded-full">
-                  +{image.tags.length - 2}
-                </span>
-              )}
-            </div>
-          )}
-
-          {/* Friend Tags */}
-          {taggedFriends.length > 0 && (
-            <div className="flex flex-wrap gap-1">
-              {taggedFriends.slice(0, 2).map((friend, index) => (
-                <button
-                  key={friend.id}
-                  className="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs rounded-full flex items-center space-x-1 hover:bg-green-200 dark:hover:bg-green-800/50 transition-colors duration-200 cursor-pointer touch-manipulation min-h-6"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (onFriendTagClick) {
-                      onFriendTagClick(friend.id);
-                    }
-                  }}
-                  title={`Filter by ${friend.name}`}
-                >
-                  <HiUsers className="w-3 h-3 flex-shrink-0" />
-                  <span className="truncate max-w-16 sm:max-w-none">{friend.name}</span>
-                </button>
-              ))}
-              {taggedFriends.length > 2 && (
-                <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 text-xs rounded-full flex items-center space-x-1">
-                  <HiUsers className="w-3 h-3" />
-                  <span>+{taggedFriends.length - 2}</span>
-                </span>
-              )}
-            </div>
-          )}
+      {/* Tags - Mobile optimized */}
+      {showTags && image.tags?.length > 0 && (
+        <div className="p-3 sm:p-4 space-y-2 sm:space-y-3 absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent pt-12 pb-2 pointer-events-none">
+          <div className="flex flex-wrap gap-1.5">
+            {image.tags.slice(0, 3).map((tag, index) => (
+              <motion.span
+                key={index}
+                className="px-2 py-1 bg-blue-100/80 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 text-xs rounded-full truncate max-w-24 sm:max-w-none backdrop-blur-sm pointer-events-auto"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                #{tag}
+              </motion.span>
+            ))}
+            {image.tags.length > 3 && (
+              <motion.span 
+                className="px-2 py-1 bg-gray-100/80 dark:bg-gray-700/50 text-gray-600 dark:text-gray-400 text-xs rounded-full backdrop-blur-sm pointer-events-auto"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                +{image.tags.length - 3}
+              </motion.span>
+            )}
+          </div>
         </div>
       )}
+      
+      {/* Hover glow effect */}
+      <motion.div
+        className="absolute inset-0 pointer-events-none rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        style={{
+          boxShadow: "0 0 40px rgba(59, 130, 246, 0.5) inset",
+        }}
+      />
     </motion.div>
   );
 }

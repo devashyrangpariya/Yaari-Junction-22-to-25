@@ -1,9 +1,11 @@
 'use client';
 
+// components/animations/AnimationDemo.js
+
 import { motion } from 'framer-motion';
-import { FadeIn, ScrollFadeIn, StaggeredFadeIn } from './FadeIn';
-import { HoverZoom, ImageHover, ButtonHover, CardHover } from './HoverZoom';
-import { Slideshow } from './Slideshow';
+import FadeIn, { ScrollFadeIn, StaggeredFadeIn } from './FadeIn';
+import HoverZoom, { ImageHover, ButtonHover, CardHover } from './HoverZoom';
+import Slideshow from './Slideshow';
 import { AnimatedText, FloatingElement, LoadingAnimation } from './AnimationUtils';
 
 // Demo component to showcase the animation system

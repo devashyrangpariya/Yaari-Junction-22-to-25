@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiCheck, FiX, FiDownload } from 'react-icons/fi';
-import { MdSelectAll, MdDeselectAll } from 'react-icons/md';
+import { MdSelectAll, MdOutlineSelectAll, MdOutlineDeselect } from 'react-icons/md';
 import DownloadButton from '../ui/DownloadButton';
 
 const BatchDownload = ({ 
@@ -93,7 +93,7 @@ const BatchDownload = ({
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <MdSelectAll className="w-4 h-4" />
+                <MdOutlineDeselect className="w-4 h-4" />
                 Select All
               </motion.button>
               
@@ -103,7 +103,7 @@ const BatchDownload = ({
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <MdDeselectAll className="w-4 h-4" />
+                <MdOutlineDeselect className="w-4 h-4" />
                 Deselect All
               </motion.button>
             </div>

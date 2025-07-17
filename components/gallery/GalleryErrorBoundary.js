@@ -67,7 +67,7 @@ class GalleryErrorBoundary extends React.Component {
             </h3>
             
             <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-md mx-auto">
-              We couldn't load the gallery images. This might be due to a network issue or server problem.
+              We couldn&apos;t load the gallery images. This might be due to a network issue or server problem.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-3 justify-center">

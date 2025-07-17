@@ -17,6 +17,7 @@
     "cloudinary": "^2.7.0",
     "clsx": "^2.1.1",
     "critters": "^0.0.23",
+    "file-saver": "^2.0.5",
     "framer-motion": "^12.23.6",
     "intersection-observer": "^0.12.2",
     "jszip": "^3.10.1",

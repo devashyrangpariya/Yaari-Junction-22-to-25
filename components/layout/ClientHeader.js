@@ -1,3 +1,4 @@
+// components/layout/ClientHeader.js
 'use client';
 
 import { useState, useEffect } from 'react';

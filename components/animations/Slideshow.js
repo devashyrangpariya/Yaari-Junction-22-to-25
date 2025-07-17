@@ -30,15 +30,15 @@ const slideTransition = {
   scale: { duration: 0.3 }
 };
 
-export default function Slideshow({ 
-  images = [], 
-  autoPlay = true, 
+export default function Slideshow({
+  images = [],
+  autoPlay = true,
   interval = 5000,
   showControls = true,
   showIndicators = true,
   className = '',
   imageClassName = '',
-  onSlideChange = () => {}
+  onSlideChange = () => { }
 }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
@@ -174,11 +174,10 @@ export default function Slideshow({
               whileHover={{ scale: 1.2 }}
               whileTap={{ scale: 0.8 }}
               onClick={() => goToSlide(index)}
-              className={`w-3 h-3 rounded-full transition-colors duration-200 ${
-                index === currentIndex 
-                  ? 'bg-blue-500' 
+              className={`w-3 h-3 rounded-full transition-colors duration-200 ${index === currentIndex
+                  ? 'bg-blue-500'
                   : 'bg-gray-300 hover:bg-gray-400'
-              }`}
+                }`}
               aria-label={`Go to slide ${index + 1}`}
             />
           ))}
@@ -200,8 +199,8 @@ export default function Slideshow({
 }
 
 // Carousel component for horizontal scrolling
-export function Carousel({ 
-  items = [], 
+export function Carousel({
+  items = [],
   itemWidth = 300,
   gap = 16,
   showArrows = true,
@@ -224,7 +223,7 @@ export function Carousel({
   const handleDragEnd = (event, info) => {
     setIsDragging(false);
     const threshold = 50;
-    
+
     if (info.offset.x > threshold && currentIndex > 0) {
       goToPrevious();
     } else if (info.offset.x < -threshold && currentIndex < maxIndex) {
