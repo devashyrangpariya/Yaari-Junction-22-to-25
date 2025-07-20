@@ -1,0 +1,411 @@
+{
+    "2022": [
+        {
+            "id": "img-2022-1",
+            "url": "/images/gallery/2022/college-start.jpg",
+            "thumbnail": "/images/gallery/2022/college-start.jpg",
+            "year": 2022,
+            "width": 800,
+            "height": 600
+        },
+        {
+            "id": "img-2022-2",
+            "url": "/images/gallery/2022/first-friends.jpg",
+            "thumbnail": "/images/gallery/2022/first-friends.jpg",
+            "title": "New Friends",
+            "description": "Meeting my roommates and first college friends",
+            "year": 2022,
+            "width": 800,
+            "height": 600,
+            "tags": [
+                "friends",
+                "dorm",
+                "memories"
+            ]
+        },
+        {
+            "id": "img-2022-3",
+            "url": "/images/gallery/2022/study-group.jpg",
+            "thumbnail": "/images/gallery/2022/study-group.jpg",
+            "title": "Study Group Session",
+            "description": "Our first group study for midterm exams",
+            "year": 2022,
+            "width": 800,
+            "height": 600,
+            "tags": [
+                "study",
+                "library",
+                "exams"
+            ]
+        },
+        {
+            "id": "img-2022-4",
+            "url": "/images/gallery/2022/first-project.jpg",
+            "thumbnail": "/images/gallery/2022/first-project.jpg",
+            "title": "First Major Project",
+            "description": "Working on our freshman engineering design project",
+            "year": 2022,
+            "width": 800,
+            "height": 600,
+            "tags": [
+                "project",
+                "engineering",
+                "teamwork"
+            ]
+        },
+        {
+            "id": "img-2022-5",
+            "url": "/images/gallery/2022/winter-break.jpg",
+            "thumbnail": "/images/gallery/2022/winter-break.jpg",
+            "title": "Winter Break Trip",
+            "description": "Celebrating the end of first semester with a trip to the mountains",
+            "year": 2022,
+            "width": 800,
+            "height": 600,
+            "tags": [
+                "winter",
+                "vacation",
+                "break"
+            ]
+        }
+    ],
+    "2023": [
+        {
+            "id": "img-2023-1",
+            "url": "/images/gallery/2023/cultural-fest.jpg",
+            "thumbnail": "/images/gallery/2023/cultural-fest.jpg",
+            "title": "Cultural Festival",
+            "description": "Annual multicultural celebration on campus",
+            "year": 2023,
+            "width": 800,
+            "height": 600,
+            "tags": [
+                "festival",
+                "culture",
+                "campus"
+            ]
+        },
+        {
+            "id": "img-2023-2",
+            "url": "/images/gallery/2023/sports-day.jpg",
+            "thumbnail": "/images/gallery/2023/sports-day.jpg",
+            "title": "Intramural Sports Day",
+            "description": "Representing our dorm in the annual sports competition",
+            "year": 2023,
+            "width": 800,
+            "height": 600,
+            "tags": [
+                "sports",
+                "competition",
+                "team"
+            ]
+        },
+        {
+            "id": "img-2023-3",
+            "url": "/images/gallery/2023/group-photo.jpg",
+            "thumbnail": "/images/gallery/2023/group-photo.jpg",
+            "title": "Sophomore Class Photo",
+            "description": "Official class photo for the yearbook",
+            "year": 2023,
+            "width": 800,
+            "height": 600,
+            "tags": [
+                "class",
+                "official",
+                "yearbook"
+            ]
+        },
+        {
+            "id": "img-2023-4",
+            "url": "/images/gallery/2023/summer-trip.jpg",
+            "thumbnail": "/images/gallery/2023/summer-trip.jpg",
+            "title": "Summer Road Trip",
+            "description": "Cross-country adventure with roommates during summer break",
+            "year": 2023,
+            "width": 800,
+            "height": 600,
+            "tags": [
+                "summer",
+                "travel",
+                "roadtrip"
+            ]
+        },
+        {
+            "id": "img-2023-5",
+            "url": "/images/gallery/2023/hackathon.jpg",
+            "thumbnail": "/images/gallery/2023/hackathon.jpg",
+            "title": "Campus Hackathon",
+            "description": "48-hour coding marathon where we built our first app",
+            "year": 2023,
+            "width": 800,
+            "height": 600,
+            "tags": [
+                "hackathon",
+                "coding",
+                "tech"
+            ]
+        }
+    ],
+    "2024": [
+        {
+            "id": "img-2024-1",
+            "url": "/images/gallery/2024/cricket-victory.jpg",
+            "thumbnail": "/images/gallery/2024/cricket-victory.jpg",
+            "year": 2024
+        }
+    ],
+    "2025": [
+        {
+            "id": "img-2025-1",
+            "url": "/images/gallery/2025/image1.jpg",
+            "thumbnail": "/images/gallery/2025/image1.jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-2",
+            "url": "/images/gallery/2025/image(2).jpg",
+            "thumbnail": "/images/gallery/2025/image(2).jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-3",
+            "url": "/images/gallery/2025/image(3).jpg",
+            "thumbnail": "/images/gallery/2025/image(3).jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-4",
+            "url": "/images/gallery/2025/image(6).jpg",
+            "thumbnail": "/images/gallery/2025/image(6).jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-6",
+            "url": "/images/gallery/2025/image(8).jpg",
+            "thumbnail": "/images/gallery/2025/image(8).jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-7",
+            "url": "/images/gallery/2025/image(9).jpg",
+            "thumbnail": "/images/gallery/2025/image(9).jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-8",
+            "url": "/images/gallery/2025/image(10).jpg",
+            "thumbnail": "/images/gallery/2025/image(10).jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-9",
+            "url": "/images/gallery/2025/image(11).jpg",
+            "thumbnail": "/images/gallery/2025/image(11).jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-10",
+            "url": "/images/gallery/2025/image(12).jpg",
+            "thumbnail": "/images/gallery/2025/image(12).jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-11",
+            "url": "/images/gallery/2025/image(15).jpg",
+            "thumbnail": "/images/gallery/2025/image(15).jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-12",
+            "url": "/images/gallery/2025/image(18).jpg",
+            "thumbnail": "/images/gallery/2025/image(18).jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-13",
+            "url": "/images/gallery/2025/image(19).jpg",
+            "thumbnail": "/images/gallery/2025/image(19).jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-14",
+            "url": "/images/gallery/2025/image(20).jpg",
+            "thumbnail": "/images/gallery/2025/image(20).jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-15",
+            "url": "/images/gallery/2025/image(22).jpg",
+            "thumbnail": "/images/gallery/2025/image(22).jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-16",
+            "url": "/images/gallery/2025/image(24).jpg",
+            "thumbnail": "/images/gallery/2025/image(24).jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-17",
+            "url": "/images/gallery/2025/image(25).jpg",
+            "thumbnail": "/images/gallery/2025/image(25).jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-18",
+            "url": "/images/gallery/2025/image(26).jpg",
+            "thumbnail": "/images/gallery/2025/image(26).jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-19",
+            "url": "/images/gallery/2025/image(28).jpg",
+            "thumbnail": "/images/gallery/2025/image(28).jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-20",
+            "url": "/images/gallery/2025/image(29).jpg",
+            "thumbnail": "/images/gallery/2025/image(29).jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-21",
+            "url": "/images/gallery/2025/image(30).jpg",
+            "thumbnail": "/images/gallery/2025/image(30).jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-22",
+            "url": "/images/gallery/2025/image(31).jpg",
+            "thumbnail": "/images/gallery/2025/image(31).jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-23",
+            "url": "/images/gallery/2025/image(32).jpg",
+            "thumbnail": "/images/gallery/2025/image(32).jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-24",
+            "url": "/images/gallery/2025/image(33).jpg",
+            "thumbnail": "/images/gallery/2025/image(33).jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-25",
+            "url": "/images/gallery/2025/image(34).jpg",
+            "thumbnail": "/images/gallery/2025/image(34).jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-26",
+            "url": "/images/gallery/2025/image(35).jpg",
+            "thumbnail": "/images/gallery/2025/image(35).jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-27",
+            "url": "/images/gallery/2025/image(36).jpg",
+            "thumbnail": "/images/gallery/2025/image(36).jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-28",
+            "url": "/images/gallery/2025/image(38).jpg",
+            "thumbnail": "/images/gallery/2025/image(38).jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-29",
+            "url": "/images/gallery/2025/image(39).jpg",
+            "thumbnail": "/images/gallery/2025/image(39).jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-30",
+            "url": "/images/gallery/2025/image(43).jpg",
+            "thumbnail": "/images/gallery/2025/image(43).jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-31",
+            "url": "/images/gallery/2025/image(48).jpg",
+            "thumbnail": "/images/gallery/2025/image(48).jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-32",
+            "url": "/images/gallery/2025/image(50).jpg",
+            "thumbnail": "/images/gallery/2025/image(50).jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-33",
+            "url": "/images/gallery/2025/image(51).jpg",
+            "thumbnail": "/images/gallery/2025/image(51).jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-34",
+            "url": "/images/gallery/2025/image(52).jpg",
+            "thumbnail": "/images/gallery/2025/image(52).jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-35",
+            "url": "/images/gallery/2025/image(55).jpg",
+            "thumbnail": "/images/gallery/2025/image(55).jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-36",
+            "url": "/images/gallery/2025/image(56).jpg",
+            "thumbnail": "/images/gallery/2025/image(56).jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-37",
+            "url": "/images/gallery/2025/image(59).jpg",
+            "thumbnail": "/images/gallery/2025/image(59).jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-38",
+            "url": "/images/gallery/2025/image(60).jpg",
+            "thumbnail": "/images/gallery/2025/image(60).jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-39",
+            "url": "/images/gallery/2025/image(61).jpg",
+            "thumbnail": "/images/gallery/2025/image(61).jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-40",
+            "url": "/images/gallery/2025/image(62).jpg",
+            "thumbnail": "/images/gallery/2025/image(62).jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-100",
+            "url": "/images/gallery/2025/image(90).jpg",
+            "thumbnail": "/images/gallery/2025/image(90).jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-41",
+            "url": "/images/gallery/2025/image2.jpg",
+            "thumbnail": "/images/gallery/2025/image2.jpg",
+            "year": 2025
+        },
+        {
+            "id": "img-2025-42",
+            "url": "/images/gallery/2025/bg-group.jpg",
+            "thumbnail": "/images/gallery/2025/bg-group.jpg",
+            "year": 2025
+        }
+    ]
+}

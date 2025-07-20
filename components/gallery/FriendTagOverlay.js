@@ -1,190 +1,114 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { HiX, HiPlus, HiCheck, HiLightBulb } from 'react-icons/hi';
-import { FRIENDS_DATA } from '../../lib/constants';
-import { suggestFriendsToTag } from '../../lib/friendTagging';
-import Button from '../ui/Button';
+import { motion } from 'framer-motion';
+import { HiTag, HiX } from 'react-icons/hi';
+import { FRIENDS_DATA } from '@/lib/constants';
 
-const FriendTagOverlay = ({
-  image,
-  isVisible,
-  onToggle,
-  onTagsUpdate,
-  className = ''
-}) => {
-  const [taggedFriends, setTaggedFriends] = useState(image?.friends || []);
-  const [showAddMode, setShowAddMode] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-
-  // Update tagged friends when image changes
+export default function FriendTagOverlay({ 
+  image, 
+  onTagsChange,
+  className = '',
+  readOnly = false
+}) {
+  const [taggedFriends, setTaggedFriends] = useState([]);
+  const [showTagSelector, setShowTagSelector] = useState(false);
+  
+  // Initialize tagged friends from image data
   useEffect(() => {
-    setTaggedFriends(image?.friends || []);
-  }, [image?.id]);
-
-  // Filter friends based on search term
-  const filteredFriends = FRIENDS_DATA.filter(friend =>
-    friend.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    friend.nickname.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  // Get friend data for tagged friends
-  const getTaggedFriendsData = () => {
-    return FRIENDS_DATA.filter(friend => taggedFriends.includes(friend.id));
-  };
-
-  const handleToggleFriend = (friendId) => {
-    const newTaggedFriends = taggedFriends.includes(friendId)
-      ? taggedFriends.filter(id => id !== friendId)
-      : [...taggedFriends, friendId];
-    
-    setTaggedFriends(newTaggedFriends);
-    
-    // Notify parent component of changes
-    if (onTagsUpdate) {
-      onTagsUpdate(image.id, newTaggedFriends);
+    if (image && image.friends) {
+      setTaggedFriends(image.friends);
+    } else {
+      setTaggedFriends([]);
     }
+  }, [image]);
+  
+  // Notify parent component when tags change
+  useEffect(() => {
+    if (onTagsChange) {
+      onTagsChange(taggedFriends);
+    }
+  }, [taggedFriends, onTagsChange]);
+  
+  const toggleFriendTag = (friendId) => {
+    setTaggedFriends(prev => {
+      if (prev.includes(friendId)) {
+        return prev.filter(id => id !== friendId);
+      } else {
+        return [...prev, friendId];
+      }
+    });
   };
-
-  const handleSaveChanges = () => {
-    setShowAddMode(false);
-    setSearchTerm('');
-  };
-
-  const taggedFriendsData = getTaggedFriendsData();
-
-  if (!isVisible) return null;
-
+  
   return (
-    <AnimatePresence>
-      <motion.div
-        className={`absolute inset-0 pointer-events-none ${className}`}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.2 }}
-      >
-        {/* Existing Friend Tags */}
-        {taggedFriendsData.map((friend, index) => (
-          <motion.div
-            key={friend.id}
-            className="absolute bg-blue-500/90 text-white px-3 py-1 rounded-full text-sm font-medium backdrop-blur-sm pointer-events-auto cursor-pointer hover:bg-blue-600/90 transition-colors duration-200 group"
-            style={{
-              left: `${15 + index * 12}%`,
-              top: `${25 + index * 8}%`,
-            }}
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0, opacity: 0 }}
-            transition={{ delay: index * 0.1 }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => handleToggleFriend(friend.id)}
-          >
-            <div className="flex items-center space-x-1">
-              <span>{friend.name}</span>
-              <HiX className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
-            </div>
-          </motion.div>
-        ))}
-
-        {/* Add Friend Button */}
-        {!showAddMode && (
-          <motion.button
-            className="absolute bottom-4 right-4 bg-green-500/90 hover:bg-green-600/90 text-white p-3 rounded-full backdrop-blur-sm pointer-events-auto transition-colors duration-200"
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0, opacity: 0 }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setShowAddMode(true)}
-          >
-            <HiPlus className="w-5 h-5" />
-          </motion.button>
-        )}
-
-        {/* Add Friend Panel */}
-        <AnimatePresence>
-          {showAddMode && (
-            <motion.div
-              className="absolute bottom-4 right-4 bg-white dark:bg-gray-800 rounded-lg shadow-xl p-4 pointer-events-auto min-w-[280px] max-w-[320px]"
-              initial={{ scale: 0, opacity: 0, y: 20 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0, opacity: 0, y: 20 }}
-              transition={{ duration: 0.2 }}
+    <div className={`relative ${className}`}>
+      {/* Tagged friends display */}
+      {taggedFriends.length > 0 && (
+        <div className="absolute bottom-2 left-2 right-2 bg-black/40 backdrop-blur-sm rounded-lg px-3 py-2 text-white text-sm">
+          <div className="flex flex-wrap gap-1">
+            {taggedFriends.map(friendId => {
+              const friend = FRIENDS_DATA.find(f => f.id === friendId);
+              return friend ? (
+                <div 
+                  key={friendId}
+                  className="bg-blue-500/70 rounded-full px-2 py-0.5 flex items-center"
+                >
+                  <span className="mr-1">{friend.name}</span>
+                  {!readOnly && (
+                    <button 
+                      onClick={() => toggleFriendTag(friendId)}
+                      className="text-white/80 hover:text-white"
+                    >
+                      <HiX className="w-3 h-3" />
+                    </button>
+                  )}
+                </div>
+              ) : null;
+            })}
+          </div>
+        </div>
+      )}
+      
+      {/* Tag button */}
+      {!readOnly && (
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={() => setShowTagSelector(!showTagSelector)}
+          className="absolute top-2 right-2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
+        >
+          <HiTag className="w-5 h-5" />
+        </motion.button>
+      )}
+      
+      {/* Friend selector */}
+      {showTagSelector && (
+        <div className="absolute top-12 right-2 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-2 w-48 max-h-60 overflow-y-auto z-10">
+          <h4 className="font-medium text-sm mb-2 px-2">Tag Friends</h4>
+          {FRIENDS_DATA.map(friend => (
+            <div 
+              key={friend.id}
+              onClick={() => toggleFriendTag(friend.id)}
+              className={`flex items-center px-2 py-1.5 rounded-md cursor-pointer ${
+                taggedFriends.includes(friend.id) 
+                  ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300' 
+                  : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+              }`}
             >
-              {/* Header */}
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="font-semibold text-gray-900 dark:text-white">Tag Friends</h3>
-                <Button
-                  variant="ghost"
-                  size="small"
-                  onClick={() => setShowAddMode(false)}
-                  className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
-                >
-                  <HiX className="w-4 h-4" />
-                </Button>
+              <div className="w-6 h-6 rounded-full bg-gray-200 dark:bg-gray-600 flex-shrink-0 mr-2">
+                {friend.profileImage && (
+                  <img 
+                    src={friend.profileImage} 
+                    alt={friend.name}
+                    className="w-full h-full rounded-full object-cover"
+                  />
+                )}
               </div>
-
-              {/* Search Input */}
-              <input
-                type="text"
-                placeholder="Search friends..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 mb-3"
-                autoFocus
-              />
-
-              {/* Friends List */}
-              <div className="max-h-48 overflow-y-auto space-y-1">
-                {filteredFriends.map(friend => (
-                  <motion.button
-                    key={friend.id}
-                    className={`w-full flex items-center space-x-3 p-2 rounded-lg transition-colors duration-200 ${
-                      taggedFriends.includes(friend.id)
-                        ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300'
-                        : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
-                    }`}
-                    onClick={() => handleToggleFriend(friend.id)}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                      {friend.name.charAt(0)}
-                    </div>
-                    <div className="flex-1 text-left">
-                      <p className="font-medium">{friend.name}</p>
-                      <p className="text-xs opacity-70">{friend.nickname}</p>
-                    </div>
-                    {taggedFriends.includes(friend.id) && (
-                      <HiCheck className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                    )}
-                  </motion.button>
-                ))}
-              </div>
-
-              {/* Actions */}
-              <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-200 dark:border-gray-700">
-                <span className="text-sm text-gray-600 dark:text-gray-400">
-                  {taggedFriends.length} friend{taggedFriends.length !== 1 ? 's' : ''} tagged
-                </span>
-                <Button
-                  variant="primary"
-                  size="small"
-                  onClick={handleSaveChanges}
-                  className="px-4 py-2"
-                >
-                  Done
-                </Button>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.div>
-    </AnimatePresence>
+              <span className="text-sm">{friend.name}</span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
   );
-};
-
-export default FriendTagOverlay;
+}

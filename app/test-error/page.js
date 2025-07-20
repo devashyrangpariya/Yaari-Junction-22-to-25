@@ -14,9 +14,9 @@ export default function TestErrorPage() {
       <div className="mt-12 p-6 bg-gray-50 rounded-lg">
         <h2 className="text-xl font-semibold mb-4">How to test:</h2>
         <ol className="list-decimal list-inside space-y-2">
-          <li>Click the "Trigger Error" button in the component above</li>
+          <li>Click the &quot;Trigger Error&quot; button in the component above</li>
           <li>The ErrorBoundary should catch the error and display a friendly message</li>
-          <li>Click "Try Again" to reset the component</li>
+          <li>Click &quot;Try Again&quot; to reset the component</li>
         </ol>
       </div>
     </div>

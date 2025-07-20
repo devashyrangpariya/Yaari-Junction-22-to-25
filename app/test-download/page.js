@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import DownloadButton from '../../components/ui/DownloadButton';
 import BatchDownload from '../../components/gallery/BatchDownload';
 import DownloadProgress from '../../components/ui/DownloadProgress';
@@ -105,9 +106,11 @@ export default function TestDownloadPage() {
               Single Image Download
             </h2>
             <div className="flex items-center gap-4">
-              <img 
+              <Image 
                 src={sampleImages[0].thumbnail}
                 alt={sampleImages[0].title}
+                width={128}
+                height={128}
                 className="w-32 h-32 bg-gray-200 rounded-lg object-cover"
               />
               <div>

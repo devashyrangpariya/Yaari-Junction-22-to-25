@@ -12,7 +12,7 @@ export default function SimpleTestPage() {
       <SimpleErrorTest />
       
       <div className="mt-12 p-6 bg-gray-50 rounded-lg">
-        <h2 className="text-xl font-semibold mb-4">What's happening:</h2>
+        <h2 className="text-xl font-semibold mb-4">What&apos;s happening:</h2>
         <ul className="list-disc list-inside space-y-2">
           <li>The component on the left throws an error in componentDidMount</li>
           <li>The ErrorBoundary catches this error and displays a friendly message</li>

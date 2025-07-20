@@ -73,7 +73,7 @@ export default function FriendProfilePage() {
                         Friend Not Found
                     </h1>
                     <p className="text-gray-600 dark:text-gray-400 mb-6">
-                        The friend you're looking for doesn't exist.
+                        The friend you&apos;re looking for doesn&apos;t exist.
                     </p>
                     <Link
                         href="/friends"
@@ -183,7 +183,7 @@ export default function FriendProfilePage() {
                             </h1>
                             {friend.nickname !== friend.name && (
                                 <p className="text-xl md:text-2xl text-white/90 mb-3">
-                                    "{friend.nickname}"
+                                    &quot;{friend.nickname}&quot;
                                 </p>
                             )}
                             <p className="text-lg md:text-xl font-medium bg-white/20 backdrop-blur-sm rounded-full px-6 py-2 inline-block mb-4">

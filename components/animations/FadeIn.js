@@ -41,20 +41,10 @@ export default function FadeIn({
   );
 }
 
-// Specialized scroll-triggered fade-in component
-export function ScrollFadeIn({ 
-  children, 
-  delay = 0, 
-  className = '',
-  threshold = 0.1,
-  once = true 
-}) {
+// Scroll triggered animation
+export function ScrollFadeIn({ children, delay = 0, className = '', threshold = 0.1, once = true }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { 
-    once, 
-    threshold,
-    margin: "-50px 0px -50px 0px"
-  });
+  const isInView = useInView(ref, { once, threshold, margin: "-50px 0px -50px 0px" });
 
   return (
     <motion.div
@@ -75,19 +65,10 @@ export function ScrollFadeIn({
   );
 }
 
-// Staggered fade-in for lists
-export function StaggeredFadeIn({ 
-  children, 
-  staggerDelay = 0.1, 
-  className = '',
-  threshold = 0.1 
-}) {
+// Staggered Fade In
+export function StaggeredFadeIn({ children, staggerDelay = 0.1, className = '', threshold = 0.1 }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { 
-    once: true, 
-    threshold,
-    margin: "-100px 0px -100px 0px"
-  });
+  const isInView = useInView(ref, { once: true, threshold, margin: "-100px 0px -100px 0px" });
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -134,6 +115,7 @@ export function StaggeredFadeIn({
   );
 }
 
+// FadeInStagger component
 export function FadeInStagger({ 
   children, 
   className = '', 
@@ -143,7 +125,6 @@ export function FadeInStagger({
   distance = 20,
   once = true
 }) {
-  // Define container variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -155,7 +136,6 @@ export function FadeInStagger({
     }
   };
   
-  // Define item variants based on direction
   const fadeItemVariants = {
     hidden: { 
       opacity: 0,
@@ -170,26 +150,6 @@ export function FadeInStagger({
     }
   };
 
-  // If we're rendering a list of children with keys
-  if (Array.isArray(children)) {
-    return (
-      <motion.div
-        className={className}
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once }}
-      >
-        {children.map((child, index) => (
-          <motion.div key={index} variants={fadeItemVariants}>
-            {child}
-          </motion.div>
-        ))}
-      </motion.div>
-    );
-  }
-  
-  // If we're wrapping a single component
   return (
     <motion.div
       className={className}
@@ -198,9 +158,17 @@ export function FadeInStagger({
       whileInView="visible"
       viewport={{ once }}
     >
-      <motion.div variants={fadeItemVariants}>
-        {children}
-      </motion.div>
+      {Array.isArray(children) ? (
+        children.map((child, index) => (
+          <motion.div key={index} variants={fadeItemVariants}>
+            {child}
+          </motion.div>
+        ))
+      ) : (
+        <motion.div variants={fadeItemVariants}>
+          {children}
+        </motion.div>
+      )}
     </motion.div>
   );
 }

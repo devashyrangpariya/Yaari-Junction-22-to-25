@@ -1,3 +1,4 @@
+// components/friends/FriendModal.js
 'use client';
 
 import { Fragment, useState } from 'react';
@@ -117,7 +118,7 @@ export default function FriendModal({ friend, isOpen, onClose }) {
                           </h2>
                           {friend.nickname !== friend.name && (
                             <p className="text-lg text-gray-600 dark:text-gray-400 mb-2">
-                              "{friend.nickname}"
+                              {`"${friend.nickname}"`}
                             </p>
                           )}
                           <p className="text-lg font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 px-4 py-2 rounded-full inline-block">

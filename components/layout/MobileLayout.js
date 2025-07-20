@@ -1,3 +1,4 @@
+// components/layout/MobileLayout.js
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -11,12 +12,14 @@ export default function MobileLayout({ children }) {
   const [deviceCapabilities, setDeviceCapabilities] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [orientation, setOrientation] = useState('portrait');
+  const [isMobile, setIsMobile] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
     // Initialize device capabilities
     const capabilities = getDeviceCapabilities();
     setDeviceCapabilities(capabilities);
+    setIsMobile(capabilities.isMobile);
     setIsLoading(false);
 
     // Handle orientation changes
@@ -76,11 +79,12 @@ export default function MobileLayout({ children }) {
   const getLayoutClasses = () => {
     const baseClasses = "min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col";
     const mobileClasses = deviceCapabilities?.isMobile ? "mobile-optimized" : "";
+    const performanceClasses = deviceCapabilities?.isLowMemoryDevice ? "mobile-reduced-motion" : "";
     const orientationClasses = orientation === 'landscape' && deviceCapabilities?.isMobile 
       ? "landscape-mobile" 
       : "";
     
-    return `${baseClasses} ${mobileClasses} ${orientationClasses}`;
+    return `${baseClasses} ${mobileClasses} ${performanceClasses} ${orientationClasses}`.trim();
   };
 
   const getMainClasses = () => {
@@ -89,8 +93,14 @@ export default function MobileLayout({ children }) {
       ? "px-3 sm:px-4" 
       : "px-4 sm:px-6 lg:px-8";
     
-    return `${baseClasses} ${mobileClasses}`;
+    return `${baseClasses} ${mobileClasses}`.trim();
   };
+
+  // Calculate if this is a truly small mobile device that needs orientation warning
+  // For tablets and larger devices, we don't need to show this warning
+  const isSmallMobileDevice = deviceCapabilities?.isMobile && 
+                              deviceCapabilities?.screenWidth < 768 &&
+                              orientation === 'landscape';
 
   return (
     <div className={getLayoutClasses()}>
@@ -99,14 +109,15 @@ export default function MobileLayout({ children }) {
 
       {/* Main Content */}
       <main className={getMainClasses()}>
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-7xl mx-auto w-full">
           <AnimatePresence mode="wait">
             <motion.div
               key={pathname}
-              variants={pageVariants}
-              initial="initial"
-              animate="in"
-              exit="out"
+              variants={deviceCapabilities?.isLowMemoryDevice ? {} : pageVariants}
+              initial={deviceCapabilities?.isLowMemoryDevice ? { opacity: 0 } : "initial"}
+              animate={deviceCapabilities?.isLowMemoryDevice ? { opacity: 1 } : "in"}
+              exit={deviceCapabilities?.isLowMemoryDevice ? { opacity: 0 } : "out"}
+              transition={deviceCapabilities?.isLowMemoryDevice ? { duration: 0.2 } : {}}
               className="w-full"
             >
               {children}
@@ -132,12 +143,12 @@ export default function MobileLayout({ children }) {
             </div>
           )}
 
-          {/* Low memory warning */}
+          {/* Low memory warning - make less obtrusive */}
           {deviceCapabilities.isLowMemoryDevice && (
-            <div className="fixed top-20 left-4 right-4 z-40 pointer-events-none">
-              <div className="bg-yellow-100 dark:bg-yellow-900/30 border border-yellow-300 dark:border-yellow-600 rounded-lg p-3 text-center">
-                <p className="text-yellow-700 dark:text-yellow-300 text-sm">
-                  Performance mode enabled for optimal experience.
+            <div className="fixed top-20 right-4 z-40 pointer-events-none">
+              <div className="bg-yellow-100 dark:bg-yellow-900/30 border border-yellow-300 dark:border-yellow-600 rounded-lg p-2 text-center">
+                <p className="text-yellow-700 dark:text-yellow-300 text-xs">
+                  Performance mode active
                 </p>
               </div>
             </div>
@@ -145,9 +156,12 @@ export default function MobileLayout({ children }) {
         </>
       )}
 
-      {/* Orientation change helper for mobile */}
-      {deviceCapabilities?.isMobile && orientation === 'landscape' && (
-        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center lg:hidden">
+      {/* Orientation change helper for small mobile devices only */}
+      {isSmallMobileDevice && (
+        <div 
+          className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center" 
+          data-orientation-helper
+        >
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 m-4 text-center max-w-sm">
             <div className="mb-4">
               <div className="w-16 h-16 mx-auto mb-4 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
@@ -164,7 +178,6 @@ export default function MobileLayout({ children }) {
             </div>
             <button
               onClick={() => {
-                // This is just a visual helper, actual rotation is handled by the user
                 document.querySelector('[data-orientation-helper]').style.display = 'none';
               }}
               className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
@@ -189,7 +202,12 @@ export function GalleryLayout({ children, title, description }) {
     
     // Auto-select optimal view mode for mobile
     if (capabilities.isMobile) {
-      setViewMode('grid');
+      // Use a simpler view for low memory devices
+      if (capabilities.isLowMemoryDevice) {
+        setViewMode('list');
+      } else {
+        setViewMode('grid');
+      }
     }
   }, []);
 
@@ -212,16 +230,16 @@ export function GalleryLayout({ children, title, description }) {
           </div>
         )}
 
-        {/* View mode selector for non-mobile */}
-        {!deviceCapabilities?.isMobile && (
+        {/* View mode selector - hide on low memory devices to simplify UI */}
+        {!deviceCapabilities?.isLowMemoryDevice && (
           <div className="flex items-center justify-end space-x-2">
-            <span className="text-sm text-gray-600 dark:text-gray-400">View:</span>
+            <span className="text-sm text-gray-600 dark:text-gray-400 hidden sm:inline">View:</span>
             <div className="flex bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
               {['grid', 'list', 'masonry'].map((mode) => (
                 <button
                   key={mode}
                   onClick={() => setViewMode(mode)}
-                  className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
+                  className={`px-3 py-1 rounded-md text-xs sm:text-sm font-medium transition-colors ${
                     viewMode === mode
                       ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm'
                       : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
@@ -248,51 +266,42 @@ export function ModalLayout({ children, onClose, title, className = '' }) {
   const [deviceCapabilities, setDeviceCapabilities] = useState(null);
 
   useEffect(() => {
-    const capabilities = getDeviceCapabilities();
-    setDeviceCapabilities(capabilities);
+    setDeviceCapabilities(getDeviceCapabilities());
   }, []);
 
   const getModalClasses = () => {
-    const baseClasses = "fixed inset-0 z-50 flex items-center justify-center p-4";
-    const mobileClasses = deviceCapabilities?.isMobile ? "mobile-modal p-0" : "";
+    const baseClasses = "bg-white dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden max-h-[90vh] w-full max-w-3xl";
+    const mobileClasses = deviceCapabilities?.isMobile ? "mobile-modal" : "";
     
-    return `${baseClasses} ${mobileClasses} ${className}`;
+    return `${baseClasses} ${mobileClasses} ${className}`.trim();
   };
 
   return (
-    <div className={getModalClasses()}>
-      {/* Backdrop */}
-      <div 
-        className="absolute inset-0 bg-black/80 backdrop-blur-sm"
-        onClick={onClose}
-      />
-      
-      {/* Modal content */}
-      <div className={`relative bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden ${
-        deviceCapabilities?.isMobile ? 'mobile-modal-content' : ''
-      }`}>
-        {/* Header */}
+    <motion.div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={onClose}
+    >
+      <motion.div
+        className={getModalClasses()}
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.9, opacity: 0 }}
+        transition={{ type: "spring", duration: 0.5 }}
+        onClick={(e) => e.stopPropagation()}
+      >
         {title && (
-          <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-              {title}
-            </h2>
-            <button
-              onClick={onClose}
-              className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
+          <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{title}</h2>
           </div>
         )}
         
-        {/* Content */}
-        <div className="overflow-y-auto">
+        <div className={`${deviceCapabilities?.isMobile ? 'mobile-modal-content' : 'p-6'} overflow-y-auto`}>
           {children}
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }

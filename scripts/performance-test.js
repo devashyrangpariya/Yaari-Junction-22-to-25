@@ -37,7 +37,7 @@ const getFormattedDate = () => {
 // Run Lighthouse test for a page
 async function runLighthouseTest(url) {
   console.log(`\nTesting ${url}...`);
-  
+
   const chrome = await chromeLauncher.launch({ chromeFlags: ['--headless'] });
   const options = {
     logLevel: 'info',
@@ -51,19 +51,19 @@ async function runLighthouseTest(url) {
       deviceScaleFactor: 2,
     }
   };
-  
+
   const runnerResult = await lighthouse(url, options);
-  
+
   // Save report
   const reportName = `${url.replace(/\//g, '-').replace(/^-/, '')}-${getFormattedDate()}`;
   const reportPath = path.join(OUTPUT_DIR, `${reportName}.html`);
   fs.writeFileSync(reportPath, runnerResult.report);
-  
+
   await chrome.kill();
-  
+
   // Return key metrics
   const { performance, accessibility, 'best-practices': bestPractices, seo } = runnerResult.lhr.categories;
-  
+
   return {
     url,
     scores: {
@@ -87,7 +87,7 @@ async function runLighthouseTest(url) {
 async function main() {
   console.log('🚀 Starting performance tests...');
   console.log('-------------------------------');
-  
+
   // Check if development server is running
   try {
     execSync('curl -s http://localhost:3000 > /dev/null');
@@ -95,15 +95,15 @@ async function main() {
     console.error('❌ Error: Development server is not running. Please start it with "npm run dev"');
     process.exit(1);
   }
-  
+
   const results = [];
-  
+
   // Test each page
   for (const page of PAGES_TO_TEST) {
     try {
       const result = await runLighthouseTest(`${BASE_URL}${page}`);
       results.push(result);
-      
+
       // Log results
       console.log(`\n📊 Results for ${page}:`);
       console.log(`  Performance: ${result.scores.performance.toFixed(1)}%`);
@@ -117,20 +117,20 @@ async function main() {
       console.error(`❌ Error testing ${page}:`, error);
     }
   }
-  
+
   // Generate summary report
   const summaryPath = path.join(OUTPUT_DIR, `summary-${getFormattedDate()}.json`);
   fs.writeFileSync(summaryPath, JSON.stringify(results, null, 2));
-  
+
   console.log('\n✅ Performance testing completed!');
   console.log(`📝 Summary report saved to: ${summaryPath}`);
-  
+
   // Calculate average scores
   const avgPerformance = results.reduce((sum, r) => sum + r.scores.performance, 0) / results.length;
   const avgAccessibility = results.reduce((sum, r) => sum + r.scores.accessibility, 0) / results.length;
   const avgBestPractices = results.reduce((sum, r) => sum + r.scores.bestPractices, 0) / results.length;
   const avgSeo = results.reduce((sum, r) => sum + r.scores.seo, 0) / results.length;
-  
+
   console.log('\n📈 Average Scores:');
   console.log(`  Performance: ${avgPerformance.toFixed(1)}%`);
   console.log(`  Accessibility: ${avgAccessibility.toFixed(1)}%`);

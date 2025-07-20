@@ -1,3 +1,4 @@
+// components/layout/Navigation.js
 'use client';
 
 import { motion } from 'framer-motion';

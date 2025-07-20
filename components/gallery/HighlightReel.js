@@ -17,7 +17,7 @@ const HIGHLIGHT_IMAGES = [
   },
   {
     id: 2,
-    url: '/images/gallery/highlight-1.jpg',
+    url: '/images/gallery/sample1.jpg',
     title: 'Cricke AR11 Victory',
     description: 'Our cricket team winning the inter-college championship with incredible teamwork.',
     year: '2024',

@@ -1,3 +1,4 @@
+// components/friends/FriendCard.js
 'use client';
 
 import { useState } from 'react';
@@ -32,7 +33,7 @@ export default function FriendCard({ friend, onCardClick, showSocialLinks = true
     <motion.div
       className={`group relative bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer touch-manipulation ${className}`}
       onClick={handleCardClick}
-      whileHover={{ 
+      whileHover={{
         scale: 1.02,
         y: -5,
         transition: { duration: 0.2, ease: "easeOut" }
@@ -49,9 +50,8 @@ export default function FriendCard({ friend, onCardClick, showSocialLinks = true
             src={friend.profileImage}
             alt={`${friend.name} profile`}
             fill
-            className={`object-cover transition-all duration-500 group-hover:scale-110 ${
-              imageLoaded ? 'opacity-100' : 'opacity-0'
-            }`}
+            className={`object-cover transition-all duration-500 group-hover:scale-110 ${imageLoaded ? 'opacity-100' : 'opacity-0'
+              }`}
             onLoad={() => setImageLoaded(true)}
             onError={() => setImageError(true)}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -63,7 +63,7 @@ export default function FriendCard({ friend, onCardClick, showSocialLinks = true
             </span>
           </div>
         )}
-        
+
         {/* Loading skeleton */}
         {!imageLoaded && !imageError && (
           <div className="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse" />
@@ -75,7 +75,7 @@ export default function FriendCard({ friend, onCardClick, showSocialLinks = true
         {/* Funny name overlay */}
         <div className="absolute bottom-4 left-4 right-4 transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
           <p className="text-white text-sm font-medium bg-black/30 backdrop-blur-sm rounded-lg px-3 py-1">
-            "{friend.funnyName}"
+            &quot;{friend.funnyName}&quot;
           </p>
         </div>
 
@@ -102,7 +102,7 @@ export default function FriendCard({ friend, onCardClick, showSocialLinks = true
           </h3>
           {friend.nickname !== friend.name && (
             <p className="text-sm text-gray-600 dark:text-gray-400 truncate">
-              "{friend.nickname}"
+              &quot;{friend.nickname}&quot;
             </p>
           )}
         </div>
@@ -117,7 +117,7 @@ export default function FriendCard({ friend, onCardClick, showSocialLinks = true
           <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
             Since {friend.joinYear}
           </span>
-          
+
           {/* View Profile Button */}
           <motion.button
             className="inline-flex items-center text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium touch-manipulation min-h-8"
