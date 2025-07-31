@@ -1,3 +1,5 @@
+// app/home/page.js
+// College memories homepage with advanced animations, glassmorphism design, and interactive elements
 'use client';
 
 import React, { useRef, useEffect, useState, useCallback } from 'react';
@@ -679,165 +681,160 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Enhanced What Makes Us Special Section */}
-      <section className="py-40 bg-black relative overflow-hidden">
-        {/* Animated Background */}
+      {/* Advanced Stats Section */}
+      <section className="py-32 bg-gradient-to-b from-black via-gray-950 to-black relative overflow-hidden">
+        {/* Advanced Animated Grid Background */}
         <div className="absolute inset-0">
+          {/* Dynamic Grid */}
+          <motion.div
+            className="absolute inset-0 opacity-20"
+            style={{
+              backgroundImage: `
+                linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px),
+                linear-gradient(180deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px)
+              `,
+              backgroundSize: '50px 50px',
+            }}
+            animate={{
+              backgroundPosition: ['0px 0px', '50px 50px', '0px 0px'],
+              opacity: [0.1, 0.3, 0.1],
+            }}
+            transition={{
+              duration: 12,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+          />
+          
+          {/* Animated Gradient Overlays */}
           <motion.div
             className="absolute inset-0"
             animate={{
               background: [
-                "radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 50%)",
-                "radial-gradient(circle at 80% 50%, rgba(168, 85, 247, 0.1) 0%, transparent 50%)",
-                "radial-gradient(circle at 50% 20%, rgba(236, 72, 153, 0.1) 0%, transparent 50%)",
-                "radial-gradient(circle at 20% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 50%)",
+                "radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.15) 0%, transparent 60%)",
+                "radial-gradient(circle at 80% 70%, rgba(168, 85, 247, 0.15) 0%, transparent 60%)",
+                "radial-gradient(circle at 50% 20%, rgba(236, 72, 153, 0.15) 0%, transparent 60%)",
+                "radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.15) 0%, transparent 60%)",
               ]
             }}
-            transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+            transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
           />
+
+          {/* Tech-inspired floating elements */}
+          {[...Array(12)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-1 h-1 bg-blue-400/30 rounded-full"
+              initial={{
+                x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1920),
+                y: Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 1080),
+              }}
+              animate={{
+                x: [null, Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1920)],
+                y: [null, Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 1080)],
+                scale: [1, 2, 1],
+                opacity: [0.3, 0.8, 0.3],
+              }}
+              transition={{
+                duration: Math.random() * 15 + 10,
+                repeat: Infinity,
+                ease: "linear",
+                delay: Math.random() * 5,
+              }}
+            />
+          ))}
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Stats Content */}
+        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
-            initial={{ opacity: 0, y: 100 }}
+            initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1 }}
-            className="text-center mb-24"
+            className="mb-16"
           >
-            <h2 className="text-6xl md:text-7xl font-black text-white mb-8">
-              What Makes Us
-              <span className="bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">
-                {" "}Special
+            <h2 className="text-4xl md:text-5xl font-black text-white mb-6">
+              Our Journey
+              <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                {" "}in Numbers
               </span>
             </h2>
-            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-              Discover the unique elements that made our college journey extraordinary
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+              Four years of memories, friendships, and achievements captured in our digital time capsule
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* Stats Grid */}
+          <motion.div
+            className="grid grid-cols-2 md:grid-cols-4 gap-8"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={{
+              hidden: { opacity: 0 },
+              visible: {
+                opacity: 1,
+                transition: {
+                  staggerChildren: 0.2
+                }
+              }
+            }}
+          >
             {[
-              {
-                icon: HiPhotograph,
-                title: 'Photo Gallery',
-                description: 'Explore memories from 2022-2025',
-                gradient: 'from-blue-500 to-cyan-500',
-                delay: 0,
-              },
-              {
-                icon: HiUsers,
-                title: '13 Amazing Friends',
-                description: 'Meet the incredible people who made it special',
-                gradient: 'from-purple-500 to-pink-500',
-                delay: 0.1,
-              },
-              {
-                icon: HiAcademicCap,
-                title: 'Sports Achievements',
-                description: 'Cricket AR11 & Satoliya AR7 victories',
-                gradient: 'from-orange-500 to-red-500',
-                delay: 0.2,
-              },
-              {
-                icon: HiSparkles,
-                title: 'Funny Moments',
-                description: 'Hilarious memories that still make us laugh',
-                gradient: 'from-green-500 to-teal-500',
-                delay: 0.3,
-              },
-            ].map((item, index) => {
-              const Icon = item.icon;
+              { number: '800+', label: 'Memories Captured', icon: HiPhotograph, color: 'from-blue-500 to-cyan-500' },
+              { number: '13', label: 'Amazing Friends', icon: HiUsers, color: 'from-purple-500 to-pink-500' },
+              { number: '4', label: 'Years Together', icon: HiAcademicCap, color: 'from-green-500 to-teal-500' },
+              { number: '∞', label: 'Bonds Forever', icon: HiSparkles, color: 'from-orange-500 to-red-500' },
+            ].map((stat, index) => {
+              const Icon = stat.icon;
               return (
                 <motion.div
-                  key={item.title}
-                  initial={{ opacity: 0, y: 100, rotateY: -90 }}
-                  whileInView={{ opacity: 1, y: 0, rotateY: 0 }}
-                  viewport={{ once: true }}
-                  transition={{
-                    delay: item.delay,
-                    duration: 0.8,
-                    type: "spring",
-                    stiffness: 100
+                  key={stat.label}
+                  variants={{
+                    hidden: { opacity: 0, y: 30, scale: 0.8 },
+                    visible: { opacity: 1, y: 0, scale: 1 }
                   }}
-                  whileHover={{
-                    y: -15,
-                    rotateY: 5,
-                    scale: 1.05,
-                    transition: { duration: 0.3 }
-                  }}
-                  className="group perspective-1000"
+                  whileHover={{ scale: 1.05, y: -5 }}
+                  className="relative group"
                 >
-                  <div className="relative p-8 bg-gradient-to-b from-gray-900/80 to-gray-800/80 backdrop-blur-xl rounded-3xl border border-gray-700/50 overflow-hidden glass transform-gpu">
-                    {/* Animated Background Glow */}
+                  {/* Glassmorphism card */}
+                  <div className="relative p-8 bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl overflow-hidden">
+                    {/* Animated background glow */}
                     <motion.div
-                      className={`absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-br ${item.gradient}`}
-                      initial={{ scale: 0, rotate: 180 }}
-                      whileHover={{ scale: 1, rotate: 0 }}
-                      transition={{ duration: 0.6, ease: "easeOut" }}
+                      className={`absolute inset-0 bg-gradient-to-br ${stat.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}
+                      initial={{ scale: 0.8, rotate: -45 }}
+                      whileHover={{ scale: 1.2, rotate: 0 }}
+                      transition={{ duration: 0.6 }}
                     />
-
-                    {/* Floating Particles */}
-                    <div className="absolute inset-0 overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                      {[...Array(8)].map((_, i) => (
-                        <motion.div
-                          key={i}
-                          className="absolute w-1 h-1 bg-white/40 rounded-full"
-                          initial={{
-                            x: Math.random() * 100 + '%',
-                            y: '100%',
-                            scale: 0
-                          }}
-                          animate={{
-                            y: '-10%',
-                            scale: [0, 1, 0],
-                            opacity: [0, 1, 0]
-                          }}
-                          transition={{
-                            duration: Math.random() * 2 + 1,
-                            repeat: Infinity,
-                            delay: Math.random() * 2,
-                          }}
-                        />
-                      ))}
-                    </div>
-
-                    {/* Content */}
+                    
                     <div className="relative z-10">
                       <motion.div
-                        className={`w-20 h-20 bg-gradient-to-br ${item.gradient} rounded-3xl flex items-center justify-center mb-8 shadow-2xl`}
-                        whileHover={{
-                          rotate: 360,
-                          scale: 1.2,
-                          boxShadow: "0 20px 40px rgba(0,0,0,0.3)"
-                        }}
-                        transition={{ duration: 0.6, type: "spring" }}
+                        className={`w-16 h-16 bg-gradient-to-br ${stat.color} rounded-xl flex items-center justify-center mb-4 mx-auto shadow-lg`}
+                        whileHover={{ rotate: 360, scale: 1.1 }}
+                        transition={{ duration: 0.8, type: "spring" }}
                       >
-                        <Icon className="w-10 h-10 text-white" />
+                        <Icon className="w-8 h-8 text-white" />
                       </motion.div>
-
-                      <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-white transition-colors">
-                        {item.title}
-                      </h3>
-
-                      <p className="text-gray-400 group-hover:text-gray-200 transition-colors leading-relaxed">
-                        {item.description}
-                      </p>
-                    </div>
-
-                    {/* Corner Accent */}
-                    <div className="absolute top-0 right-0 w-20 h-20 overflow-hidden">
+                      
                       <motion.div
-                        className={`absolute -top-10 -right-10 w-20 h-20 bg-gradient-to-br ${item.gradient} rounded-full opacity-20`}
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                      />
+                        className="text-4xl md:text-5xl font-black text-white mb-2"
+                        initial={{ scale: 1 }}
+                        whileInView={{ scale: [1, 1.1, 1] }}
+                        transition={{ duration: 0.6, delay: index * 0.1 }}
+                      >
+                        {stat.number}
+                      </motion.div>
+                      
+                      <p className="text-gray-300 font-medium text-sm md:text-base">
+                        {stat.label}
+                      </p>
                     </div>
                   </div>
                 </motion.div>
               );
             })}
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -890,8 +887,8 @@ export default function HomePage() {
             transition={{ duration: 1.2, ease: "easeOut" }}
             className="relative perspective-1000"
           >
-            {/* Ultra-Advanced Card Container */}
-            <div className="relative bg-gradient-to-br from-gray-800/30 to-gray-900/30 backdrop-blur-2xl rounded-3xl p-20 border border-gray-700/30 overflow-hidden shadow-2xl glass">
+            {/* Ultra-Advanced Card Container with Glassmorphism */}
+            <div className="relative bg-white/5 backdrop-blur-3xl rounded-3xl p-20 border border-white/10 overflow-hidden shadow-2xl">
 
               {/* Animated Border Effect */}
               <motion.div
@@ -906,7 +903,7 @@ export default function HomePage() {
                 }}
                 transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
               >
-                <div className="absolute inset-[2px] bg-gray-900/90 backdrop-blur-xl rounded-3xl" />
+                <div className="absolute inset-[2px] bg-black/80 backdrop-blur-xl rounded-3xl" />
               </motion.div>
 
               {/* Floating Background Elements */}

@@ -1,3 +1,5 @@
+// app/gallery/page.js
+// Image gallery with year filtering, mobile optimization, and lightbox functionality
 'use client';
 
 import { useState, useEffect } from 'react';

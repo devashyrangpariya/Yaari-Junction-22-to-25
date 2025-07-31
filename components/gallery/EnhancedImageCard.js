@@ -1,3 +1,5 @@
+// components/gallery/EnhancedImageCard.js
+// Optimized image card with hover effects, mobile optimization, and click handlers
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
@@ -219,7 +221,7 @@ export default function EnhancedImageCard({
                 transition={{ duration: 0.3, delay: 0.1 }}
               >
                 <span className="text-xs text-white bg-black/40 px-3 py-1.5 rounded-full backdrop-blur-sm">
-                  Click to download
+                  {onImageClick ? 'Click to view' : 'Click to download'}
                 </span>
               </motion.div>
             )}

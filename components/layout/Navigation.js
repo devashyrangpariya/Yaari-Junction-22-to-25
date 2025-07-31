@@ -1,4 +1,5 @@
 // components/layout/Navigation.js
+// Mobile navigation sidebar with smooth animations and glassmorphism design
 'use client';
 
 import { motion } from 'framer-motion';

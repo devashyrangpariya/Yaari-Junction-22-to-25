@@ -149,8 +149,38 @@
     "2024": [
         {
             "id": "img-2024-1",
-            "url": "/images/gallery/2024/cricket-victory.jpg",
-            "thumbnail": "/images/gallery/2024/cricket-victory.jpg",
+            "url": "/images/gallery/2024/IMG-20250716-WA0046.jpg",
+            "thumbnail": "/images/gallery/2024/IMG-20250716-WA0046.jpg",
+            "year": 2024
+        },
+        {
+            "id": "img-2024-2",
+            "url": "/images/gallery/2024/IMG-20250716-WA0047.jpg",
+            "thumbnail": "/images/gallery/2024/IMG-20250716-WA0047.jpg",
+            "year": 2024
+        },
+        {
+            "id": "img-2024-3",
+            "url": "/images/gallery/2024/IMG-20250716-WA0048.jpg",
+            "thumbnail": "/images/gallery/2024/IMG-20250716-WA0048.jpg",
+            "year": 2024
+        },
+        {
+            "id": "img-2024-4",
+            "url": "/images/gallery/2024/IMG-20250716-WA0049.jpg",
+            "thumbnail": "/images/gallery/2024/IMG-20250716-WA0049.jpg",
+            "year": 2024
+        },
+        {
+            "id": "img-2024-5",
+            "url": "/images/gallery/2024/IMG-20250716-WA0050.jpg",
+            "thumbnail": "/images/gallery/2024/IMG-20250716-WA0050.jpg",
+            "year": 2024
+        },
+        {
+            "id": "img-2024-6",
+            "url": "/images/gallery/2024/IMG-20250716-WA0051.jpg",
+            "thumbnail": "/images/gallery/2024/IMG-20250716-WA0051.jpg",
             "year": 2024
         }
     ],

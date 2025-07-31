@@ -15,22 +15,25 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: APP_METADATA.title,
-  description: APP_METADATA.description,
-  author: APP_METADATA.author,
-  metadataBase: new URL('https://college-memories.example.com'),
-  openGraph: {
-    title: APP_METADATA.title,
-    description: APP_METADATA.description,
-    images: ['/images/og-image.jpg'],
-    type: 'website'
+  title: 'Yaari Junction 22 to 25',
+  description: 'Yaari Junction 22 to 25 | Devashy Rangpariya',
+  author: 'Devashy Rangpariya',
+  metadataBase: new URL('https://yaari-junction-22-to-25.vercel.app'),
+  icons: {
+    icon: '/favicon.ico',
   },
-  twitter: {
-    card: 'summary_large_image',
-    title: APP_METADATA.title,
-    description: APP_METADATA.description,
-    images: ['/images/og-image.jpg']
-  }
+  // openGraph: {
+  //   title: APP_METADATA.title,
+  //   description: APP_METADATA.description,
+  //   images: ['/images/og-image.jpg'],
+  //   type: 'website'
+  // },
+  // twitter: {
+  //   card: 'summary_large_image',
+  //   title: APP_METADATA.title,
+  //   description: APP_METADATA.description,
+  //   images: ['/images/og-image.jpg']
+  // }
 };
 
 export default function RootLayout({ children }) {

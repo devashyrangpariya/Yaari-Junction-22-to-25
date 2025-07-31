@@ -1,4 +1,5 @@
 // components/layout/MobileLayout.js
+// Mobile-optimized layout wrapper with performance optimizations and responsive design
 'use client';
 
 import { useState, useEffect } from 'react';
