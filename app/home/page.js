@@ -518,28 +518,28 @@ export default function HomePage() {
         </motion.div>
       </motion.section>
 
-      {/* Ultra-Advanced Memory Highlights Section */}
-      <section className="py-40 bg-gradient-to-b from-black via-gray-900 to-black relative overflow-hidden">
-        {/* Animated Background Grid */}
+      {/* Ultra-Advanced Memory Highlights Section - Mobile Optimized */}
+      <section className="py-20 sm:py-28 md:py-40 bg-gradient-to-b from-black via-gray-900 to-black relative overflow-hidden">
+        {/* Animated Background Grid - Mobile Optimized */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0.6),transparent)]" />
         </div>
 
-        {/* Floating Background Elements */}
+        {/* Floating Background Elements - Reduced for Mobile */}
         <div className="absolute inset-0 overflow-hidden">
-          {[...Array(6)].map((_, i) => (
+          {[...Array(4)].map((_, i) => (
             <motion.div
               key={i}
-              className="absolute w-96 h-96 rounded-full opacity-5"
+              className="absolute w-64 sm:w-80 md:w-96 h-64 sm:h-80 md:h-96 rounded-full opacity-5"
               style={{
-                background: `radial-gradient(circle, ${['#3b82f6', '#8b5cf6', '#ec4899', '#10b981', '#f59e0b', '#ef4444'][i]
+                background: `radial-gradient(circle, ${['#3b82f6', '#8b5cf6', '#ec4899', '#10b981'][i]
                   } 0%, transparent 70%)`,
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
               }}
               animate={{
-                scale: [1, 1.2, 1],
-                opacity: [0.05, 0.1, 0.05],
+                scale: [1, 1.1, 1],
+                opacity: [0.05, 0.08, 0.05],
                 rotate: [0, 180, 360],
               }}
               transition={{
@@ -552,37 +552,37 @@ export default function HomePage() {
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Advanced Section Header */}
+          {/* Advanced Section Header - Mobile Optimized */}
           <motion.div
-            initial={{ opacity: 0, y: 100 }}
+            initial={{ opacity: 0, y: 60 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            className="text-center mb-32"
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="text-center mb-16 sm:mb-24 md:mb-32"
           >
             <motion.div
               initial={{ scale: 0, rotate: -180, opacity: 0 }}
               whileInView={{ scale: 1, rotate: 0, opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3, duration: 0.8, type: "spring", stiffness: 200 }}
-              className="inline-block relative mb-10"
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ delay: 0.2, duration: 0.7, type: "spring", stiffness: 200 }}
+              className="inline-block relative mb-6 sm:mb-10"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-3xl blur-xl opacity-70" />
-              <div className="relative p-6 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-3xl">
-                <HiPhotograph className="w-8 h-8 text-white" />
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-2xl sm:rounded-3xl blur-lg opacity-70" />
+              <div className="relative p-4 sm:p-6 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-2xl sm:rounded-3xl">
+                <HiPhotograph className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
               </div>
             </motion.div>
 
             <motion.h2
-              className="text-5xl md:text-6xl lg:text-5xl font-black mb-8 leading-tight"
-              initial={{ opacity: 0, y: 50 }}
+              className="text-4xl sm:text-5xl md:text-6xl font-black mb-5 sm:mb-8 leading-tight"
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.5, duration: 0.8 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ delay: 0.3, duration: 0.7 }}
             >
               <span className="text-white">Memory </span>
               <motion.span
-                className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent"
+                className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent inline-block"
                 animate={{
                   backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
                 }}
@@ -600,11 +600,11 @@ export default function HomePage() {
             </motion.h2>
 
             <motion.p
-              className="text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed font-light"
+              className="text-lg sm:text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed font-light"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.7, duration: 1 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ delay: 0.5, duration: 0.8 }}
             >
               A curated collection of moments that defined our journey.
               Each frame tells a story of <span className="text-blue-400 font-semibold">laughter</span>,
@@ -613,36 +613,36 @@ export default function HomePage() {
             </motion.p>
           </motion.div>
 
-          {/* Ultra-Enhanced Highlight Reel Container */}
+          {/* Ultra-Enhanced Highlight Reel Container - Mobile Optimized */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.2, delay: 0.4, ease: "easeOut" }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.9, delay: 0.3, ease: "easeOut" }}
             className="relative"
           >
-            {/* Multi-layer Glow Effects */}
-            <div className="absolute -inset-10 bg-gradient-to-r from-blue-500/30 via-purple-500/30 to-pink-500/30 blur-3xl opacity-70" />
-            <div className="absolute -inset-5 bg-gradient-to-r from-blue-400/20 via-purple-400/20 to-pink-400/20 blur-2xl" />
+            {/* Multi-layer Glow Effects - Optimized for mobile */}
+            <div className="absolute -inset-4 sm:-inset-6 md:-inset-10 bg-gradient-to-r from-blue-500/30 via-purple-500/30 to-pink-500/30 blur-2xl sm:blur-3xl opacity-60 sm:opacity-70" />
+            <div className="absolute -inset-2 sm:-inset-3 md:-inset-5 bg-gradient-to-r from-blue-400/20 via-purple-400/20 to-pink-400/20 blur-xl sm:blur-2xl" />
 
-            {/* Glassmorphism Container */}
-            <div className="relative bg-white/5 backdrop-blur-xl rounded-3xl p-8 border border-white/10 shadow-2xl">
+            {/* Glassmorphism Container - Mobile Optimized */}
+            <div className="relative bg-white/5 backdrop-blur-xl rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 border border-white/10 shadow-2xl">
               <HighlightReel />
             </div>
           </motion.div>
 
-          {/* Ultra-Advanced CTA Button */}
+          {/* Ultra-Advanced CTA Button - Mobile Optimized */}
           <motion.div
-            initial={{ opacity: 0, y: 50 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.8, duration: 0.8 }}
-            className="mt-20 text-center"
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ delay: 0.6, duration: 0.7 }}
+            className="mt-12 sm:mt-16 md:mt-20 text-center"
           >
             <Link href="/gallery">
               <motion.button
-                className="group relative px-16 py-8 overflow-hidden rounded-full shadow-2xl"
-                whileHover={{ scale: 1.08, y: -4 }}
+                className="group relative px-8 sm:px-12 md:px-16 py-5 sm:py-6 md:py-8 overflow-hidden rounded-full shadow-2xl"
+                whileHover={{ scale: 1.06, y: -3 }}
                 whileTap={{ scale: 0.95 }}
                 transition={{ type: "spring", stiffness: 400, damping: 20 }}
               >
@@ -655,17 +655,17 @@ export default function HomePage() {
                   transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
                 />
 
-                <div className="absolute inset-[3px] bg-black/60 backdrop-blur-xl rounded-full" />
+                <div className="absolute inset-[2px] sm:inset-[3px] bg-black/60 backdrop-blur-xl rounded-full" />
 
                 {/* Button Content */}
-                <span className="relative z-10 flex items-center gap-4 text-white font-bold text-xl">
-                  <HiPhotograph className="w-8 h-8" />
+                <span className="relative z-10 flex items-center gap-2 sm:gap-3 md:gap-4 text-white font-bold text-base sm:text-lg md:text-xl">
+                  <HiPhotograph className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8" />
                   Explore Full Gallery
                   <motion.span
-                    animate={{ x: [0, 8, 0] }}
+                    animate={{ x: [0, 5, 0] }}
                     transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                   >
-                    <HiArrowRight className="w-6 h-6" />
+                    <HiArrowRight className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
                   </motion.span>
                 </span>
 
@@ -682,12 +682,12 @@ export default function HomePage() {
       </section>
 
       {/* Advanced Stats Section */}
-      <section className="py-32 bg-gradient-to-b from-black via-gray-950 to-black relative overflow-hidden">
+      <section className="py-16 md:py-24 lg:py-32 bg-gradient-to-b from-black via-gray-950 to-black relative overflow-hidden">
         {/* Advanced Animated Grid Background */}
         <div className="absolute inset-0">
-          {/* Dynamic Grid */}
+          {/* Dynamic Grid - Optimized for performance */}
           <motion.div
-            className="absolute inset-0 opacity-20"
+            className="absolute inset-0 opacity-10"
             style={{
               backgroundImage: `
                 linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px),
@@ -697,46 +697,45 @@ export default function HomePage() {
             }}
             animate={{
               backgroundPosition: ['0px 0px', '50px 50px', '0px 0px'],
-              opacity: [0.1, 0.3, 0.1],
+              opacity: [0.1, 0.2, 0.1],
             }}
             transition={{
-              duration: 12,
+              duration: 15,
               repeat: Infinity,
               ease: "linear"
             }}
           />
           
-          {/* Animated Gradient Overlays */}
+          {/* Animated Gradient Overlays - Reduced complexity */}
           <motion.div
             className="absolute inset-0"
             animate={{
               background: [
-                "radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.15) 0%, transparent 60%)",
-                "radial-gradient(circle at 80% 70%, rgba(168, 85, 247, 0.15) 0%, transparent 60%)",
-                "radial-gradient(circle at 50% 20%, rgba(236, 72, 153, 0.15) 0%, transparent 60%)",
-                "radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.15) 0%, transparent 60%)",
+                "radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.12) 0%, transparent 50%)",
+                "radial-gradient(circle at 80% 70%, rgba(168, 85, 247, 0.12) 0%, transparent 50%)",
+                "radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.12) 0%, transparent 50%)",
               ]
             }}
-            transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+            transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
           />
 
-          {/* Tech-inspired floating elements */}
-          {[...Array(12)].map((_, i) => (
+          {/* Tech-inspired floating elements - Reduced quantity for better performance */}
+          {[...Array(6)].map((_, i) => (
             <motion.div
               key={i}
-              className="absolute w-1 h-1 bg-blue-400/30 rounded-full"
+              className="absolute w-1 h-1 bg-blue-400/30 rounded-full hidden md:block"
               initial={{
-                x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1920),
-                y: Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 1080),
+                x: Math.random() * 100 + "%",
+                y: Math.random() * 100 + "%",
               }}
               animate={{
-                x: [null, Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1920)],
-                y: [null, Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 1080)],
+                x: [null, Math.random() * 100 + "%"],
+                y: [null, Math.random() * 100 + "%"],
                 scale: [1, 2, 1],
-                opacity: [0.3, 0.8, 0.3],
+                opacity: [0.3, 0.6, 0.3],
               }}
               transition={{
-                duration: Math.random() * 15 + 10,
+                duration: Math.random() * 20 + 15,
                 repeat: Infinity,
                 ease: "linear",
                 delay: Math.random() * 5,
@@ -746,37 +745,37 @@ export default function HomePage() {
         </div>
 
         {/* Stats Content */}
-        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
-            initial={{ opacity: 0, y: 50 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1 }}
-            className="mb-16"
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.8 }}
+            className="mb-10 md:mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-black text-white mb-6">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white mb-4 md:mb-6">
               Our Journey
               <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
                 {" "}in Numbers
               </span>
             </h2>
-            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">
               Four years of memories, friendships, and achievements captured in our digital time capsule
             </p>
           </motion.div>
 
-          {/* Stats Grid */}
+          {/* Stats Grid - Improved responsiveness */}
           <motion.div
-            className="grid grid-cols-2 md:grid-cols-4 gap-8"
+            className="grid grid-cols-2 gap-4 sm:gap-6 md:gap-8 lg:grid-cols-4"
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-50px" }}
             variants={{
               hidden: { opacity: 0 },
               visible: {
                 opacity: 1,
                 transition: {
-                  staggerChildren: 0.2
+                  staggerChildren: 0.15
                 }
               }
             }}
@@ -792,41 +791,42 @@ export default function HomePage() {
                 <motion.div
                   key={stat.label}
                   variants={{
-                    hidden: { opacity: 0, y: 30, scale: 0.8 },
+                    hidden: { opacity: 0, y: 20, scale: 0.9 },
                     visible: { opacity: 1, y: 0, scale: 1 }
                   }}
-                  whileHover={{ scale: 1.05, y: -5 }}
+                  whileHover={{ scale: 1.03, y: -3 }}
                   className="relative group"
                 >
-                  {/* Glassmorphism card */}
-                  <div className="relative p-8 bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl overflow-hidden">
-                    {/* Animated background glow */}
+                  {/* Improved glassmorphism card */}
+                  <div className="relative p-4 sm:p-6 md:p-8 bg-white/5 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-white/10 shadow-xl overflow-hidden h-full">
+                    {/* Animated background glow - Optimized */}
                     <motion.div
-                      className={`absolute inset-0 bg-gradient-to-br ${stat.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}
+                      className={`absolute inset-0 bg-gradient-to-br ${stat.color} opacity-0 group-hover:opacity-15 transition-opacity duration-500`}
                       initial={{ scale: 0.8, rotate: -45 }}
-                      whileHover={{ scale: 1.2, rotate: 0 }}
-                      transition={{ duration: 0.6 }}
+                      whileHover={{ scale: 1.1, rotate: 0 }}
+                      transition={{ duration: 0.5 }}
                     />
                     
                     <div className="relative z-10">
                       <motion.div
-                        className={`w-16 h-16 bg-gradient-to-br ${stat.color} rounded-xl flex items-center justify-center mb-4 mx-auto shadow-lg`}
-                        whileHover={{ rotate: 360, scale: 1.1 }}
-                        transition={{ duration: 0.8, type: "spring" }}
+                        className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br ${stat.color} rounded-lg sm:rounded-xl flex items-center justify-center mb-3 md:mb-4 mx-auto shadow-lg`}
+                        whileHover={{ rotate: 360 }}
+                        transition={{ duration: 0.7, type: "spring" }}
                       >
-                        <Icon className="w-8 h-8 text-white" />
+                        <Icon className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
                       </motion.div>
                       
                       <motion.div
-                        className="text-4xl md:text-5xl font-black text-white mb-2"
+                        className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-1 sm:mb-2"
                         initial={{ scale: 1 }}
                         whileInView={{ scale: [1, 1.1, 1] }}
+                        viewport={{ once: true }}
                         transition={{ duration: 0.6, delay: index * 0.1 }}
                       >
                         {stat.number}
                       </motion.div>
                       
-                      <p className="text-gray-300 font-medium text-sm md:text-base">
+                      <p className="text-gray-300 font-medium text-xs sm:text-sm md:text-base">
                         {stat.label}
                       </p>
                     </div>
